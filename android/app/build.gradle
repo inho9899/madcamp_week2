@@ -44,7 +44,9 @@ android {
         versionName = flutterVersionName
         manifestPlaceholders = [
                 applicationName: "android.app.Application",
-                KAKAO_APP_KEY: "e6f2b28d149730b2e8c55ba532d18474"
+                KAKAO_APP_KEY: "e6f2b28d149730b2e8c55ba532d18474",
+                naverClientId: "UfOENwcSP9mQjLR2dBqo",
+                naverClientSecret: "V9cOMZOGUU"
         ]
     }
 

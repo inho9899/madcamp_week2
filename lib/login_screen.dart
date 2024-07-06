@@ -12,6 +12,7 @@ class LoginPage extends StatelessWidget {
   Future<void> _loginWithKakao(BuildContext context) async {
     try {
       bool isInstalled = await isKakaoTalkInstalled();
+      print('카카오톡 설치 여부: $isInstalled');
       if (isInstalled) {
         try {
           await UserApi.instance.loginWithKakaoTalk();
@@ -29,6 +30,7 @@ class LoginPage extends StatelessWidget {
       }
       // 로그인 성공 후 사용자 정보 가져오기
       User user = await UserApi.instance.me();
+      print('사용자 정보: ${user.toString()}');
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => HomeScreen(kakaoUser: user)),
@@ -37,6 +39,7 @@ class LoginPage extends StatelessWidget {
       print('카카오 로그인 실패: $error');
     }
   }
+
 
   // 네이버 로그인 처리
   Future<void> _loginWithNaver(BuildContext context) async {

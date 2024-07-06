@@ -12,6 +12,7 @@ class Tab2Screen extends StatelessWidget {
   }
 
   void _goToPlaylist() {
+
     // 플레이리스트 탭으로 이동하는 로직
   }
 

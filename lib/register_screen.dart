@@ -11,6 +11,7 @@ class RegisterScreen extends StatelessWidget {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('모든 정보를 입력해주세요'),
+          duration: Duration(seconds: 1),
         ),
       );
       return;
@@ -18,7 +19,6 @@ class RegisterScreen extends StatelessWidget {
 
     // 회원가입 로직을 여기에 추가
     // ex) 서버와 통신하여 회원가입 처리
-
 
     // 회원가입 성공 시 음악 취향 조사 페이지로 이동
     Navigator.push(
@@ -31,8 +31,19 @@ class RegisterScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('회원가입'),
+        backgroundColor: Colors.black,
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.grey, // 화살표 색상
+            size: 30, // 화살표 크기
+          ),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
       ),
+      backgroundColor: Colors.black, // 배경색을 검정으로 설정
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -43,8 +54,10 @@ class RegisterScreen extends StatelessWidget {
               children: [
                 TextField(
                   controller: _nameController,
+                  style: TextStyle(color: Colors.white), // 입력 텍스트 색상을 흰색으로 설정
                   decoration: InputDecoration(
                     labelText: '이름',
+                    labelStyle: TextStyle(color: Colors.white), // 레이블 텍스트 색상
                     border: UnderlineInputBorder(), // 밑줄 스타일 테두리
                     enabledBorder: UnderlineInputBorder(
                       borderSide: BorderSide(color: Colors.grey), // 기본 밑줄 색상
@@ -68,8 +81,10 @@ class RegisterScreen extends StatelessWidget {
               children: [
                 TextField(
                   controller: _idController,
+                  style: TextStyle(color: Colors.white), // 입력 텍스트 색상을 흰색으로 설정
                   decoration: InputDecoration(
                     labelText: '아이디',
+                    labelStyle: TextStyle(color: Colors.white), // 레이블 텍스트 색상
                     border: UnderlineInputBorder(), // 밑줄 스타일 테두리
                     enabledBorder: UnderlineInputBorder(
                       borderSide: BorderSide(color: Colors.grey), // 기본 밑줄 색상
@@ -93,8 +108,10 @@ class RegisterScreen extends StatelessWidget {
               children: [
                 TextField(
                   controller: _passwordController,
+                  style: TextStyle(color: Colors.white), // 입력 텍스트 색상을 흰색으로 설정
                   decoration: InputDecoration(
                     labelText: '비밀번호',
+                    labelStyle: TextStyle(color: Colors.white), // 레이블 텍스트 색상
                     border: UnderlineInputBorder(), // 밑줄 스타일 테두리
                     enabledBorder: UnderlineInputBorder(
                       borderSide: BorderSide(color: Colors.grey), // 기본 밑줄 색상
@@ -113,7 +130,7 @@ class RegisterScreen extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 30),
+            SizedBox(height: 50),
             Container(
               width: 200,
               height: 50,

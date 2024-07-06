@@ -35,9 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
     ];
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Home'),
-      ),
+      backgroundColor: Colors.black, // 전체 배경색을 검정으로 설정
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
@@ -58,6 +56,10 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
+        backgroundColor: Colors.black, // 네비게이션 바 배경색을 검정으로 설정
+        selectedItemColor: Colors.white, // 선택된 아이템 색상을 흰색으로 설정
+        unselectedItemColor: Colors.grey, // 선택되지 않은 아이템 색상을 회색으로 설정
+        type: BottomNavigationBarType.fixed, // 네비게이션 바 타입을 fixed로 설정
       ),
     );
   }

@@ -34,6 +34,7 @@ class _PreferenceScreenState extends State<PreferenceScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('한 개 이상의 장르를 선택해주세요'),
+          duration: Duration(seconds: 1),
         ),
       );
       return;
@@ -50,12 +51,24 @@ class _PreferenceScreenState extends State<PreferenceScreen> {
   }
 
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('음악 취향 조사'),
+        backgroundColor: Colors.black,
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.grey, // 화살표 색상
+            size: 30, // 화살표 크기
+          ),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
       ),
+      backgroundColor: Colors.black, // 배경색을 검정으로 설정
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -68,6 +81,7 @@ class _PreferenceScreenState extends State<PreferenceScreen> {
                 style: TextStyle(
                   fontSize: 17,
                   fontWeight: FontWeight.bold,
+                  color: Colors.white, // 텍스트 색상 흰색으로 설정
                 ),
               ),
             ),
@@ -77,6 +91,7 @@ class _PreferenceScreenState extends State<PreferenceScreen> {
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
+                  color: Colors.white, // 텍스트 색상 흰색으로 설정
                 ),
               ),
             ),
@@ -132,7 +147,7 @@ class _PreferenceScreenState extends State<PreferenceScreen> {
                     '설문 완료하기 >',
                     style: TextStyle(
                       fontSize: 17,
-                      color: Colors.black,
+                      color: Colors.white, // 텍스트 색상 흰색으로 설정
                       //decoration: TextDecoration.underline,
                     ),
                   ),

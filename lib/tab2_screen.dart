@@ -86,135 +86,13 @@ class Tab2Screen extends StatelessWidget {
     );
   }
 
-  /*
-  @override
-  Widget build(BuildContext context) {
-    return SingleChildScrollView( // 여기에 SingleChildScrollView 추가
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              '오늘의 추천 플레이리스트',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(height: 20),
-            Center(
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(16.0), // 모서리를 둥글게 설정
-                child: Image.asset(
-                  albumImage,
-                  height: 300,
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-            SizedBox(height: 30),
-            Text(
-              songTitle,
-              style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(height: 10),
-            Container(
-              margin: EdgeInsets.symmetric(vertical: 20),
-              width: 350, // 중앙에 원하는 길이만큼 줄을 긋기 위해 너비 설정
-              child: Divider(
-                color: Colors.grey,
-                thickness: 1,
-              ),
-            ),
-            SizedBox(height: 5),
-            Text(
-              songDescription,
-              style: TextStyle(fontSize: 17),
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(height: 5),
-            Container(
-              margin: EdgeInsets.symmetric(vertical: 20),
-              width: 350, // 중앙에 원하는 길이만큼 줄을 긋기 위해 너비 설정
-              child: Divider(
-                color: Colors.grey,
-                thickness: 1,
-              ),
-            ),
-            SizedBox(height: 10),
-            Padding(
-              padding: const EdgeInsets.only(left: 30.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  GestureDetector(
-                    onTap: () => _addToPlaylist(context),
-                    child: Row(
-                      children: [
-                        Image.asset('assets/icons/plus_icon.png', width: 25, height: 25),
-                        SizedBox(width: 8),
-                        Text(
-                          '  플레이리스트에 추가하기',
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: Color(0xFF89BF0F),
-                            fontWeight: FontWeight.w800,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 16),
-                  GestureDetector(
-                    onTap: () => _writeReview(context),
-                    child: Row(
-                      children: [
-                        Image.asset('assets/icons/plus_icon.png', width: 25, height: 25),
-                        SizedBox(width: 8),
-                        Text(
-                          '  리뷰 쓰러 가기',
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: Color(0xFF89BF0F), // 사용자 지정 색상
-                            fontWeight: FontWeight.w800, // 볼드체 설정
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 16),
-                  GestureDetector(
-                    onTap: () => _goToPlaylist(context),
-                    child: Row(
-                      children: [
-                        Image.asset('assets/icons/plus_icon.png', width: 25, height: 25),
-                        SizedBox(width: 8),
-                        Text(
-                          '  플레이리스트로 이동',
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: Color(0xFF89BF0F),
-                            fontWeight: FontWeight.w800,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-   */
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black, // Scaffold 배경색을 검정으로 설정
       appBar: AppBar(
-        title: Text('Tab 2 Screen'),
+        backgroundColor: Colors.black,
       ),
       body: SingleChildScrollView(
         child: Container(

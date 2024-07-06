@@ -6,12 +6,17 @@ class PlaylistScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Color(0xFF000000),
       appBar: AppBar(
-        /*
-        title: Text('추천 플레이리스트',
-        style: TextStyle(color: Colors.white),
-        ),
-        */
         backgroundColor: Colors.black,
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.grey, // 화살표 색상
+            size: 30, // 화살표 크기
+          ),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

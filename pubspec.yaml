@@ -48,6 +48,7 @@ dev_dependencies:
   flutter_lints: ^3.0.0
   kakao_flutter_sdk : ^1.9.3
   flutter_naver_login : ^1.8.0
+  flutter_rating_bar: ^4.0.0
 
   http: ^0.13.3
 
@@ -56,7 +57,17 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
-
+  assets:
+    - assets/images/kakao.png
+    - assets/images/naver.png
+    - assets/images/image1.jpeg
+    - assets/images/image2.jpeg
+    - assets/images/image3.jpeg
+    - assets/images/image4.jpeg
+    - assets/images/image5.jpeg
+    - assets/images/image6.jpeg
+    - assets/images/album_cover.jpeg
+    - assets/icons/plus_icon.png
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

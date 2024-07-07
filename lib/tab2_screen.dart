@@ -16,6 +16,7 @@ class Tab2Screen extends StatelessWidget {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text('플레이리스트에 추가되었습니다'),
+        duration: Duration(seconds: 1),
       ),
     );
   }

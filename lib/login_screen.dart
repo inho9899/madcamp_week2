@@ -4,7 +4,7 @@ import 'package:flutter_naver_login/flutter_naver_login.dart';
 import 'id_login_screen.dart';
 import 'home_screen.dart';
 import 'register_screen.dart';
-import 'naver_pwd_screen.dart'; // 추가
+import 'pwd_screen.dart'; // 추가
 
 class LoginPage extends StatelessWidget {
   // 카카오톡 로그인 처리
@@ -32,7 +32,9 @@ class LoginPage extends StatelessWidget {
       print('사용자 정보: ${user.toString()}');
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => HomeScreen(kakaoUser: user)),
+        MaterialPageRoute(
+          builder: (context) => PwdScreen(email: user.kakaoAccount?.email ?? 'unknown@example.com'),
+        ),
       );
     } catch (error) {
       print('카카오 로그인 실패: $error');
@@ -47,7 +49,7 @@ class LoginPage extends StatelessWidget {
         print('네이버로 로그인 성공: ${result.account}');
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => NaverPwdScreen(email: result.account.email)), // 변경
+          MaterialPageRoute(builder: (context) => PwdScreen(email: result.account.email)),
         );
       } else {
         print('네이버 로그인 실패: ${result.errorMessage}');

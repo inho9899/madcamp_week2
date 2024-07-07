@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'home_screen.dart';
 
-class NaverPwdScreen extends StatelessWidget {
-  final String email; // 네이버 로그인으로 받아온 이메일 등 사용자 정보를 받기 위해 추가
+class PwdScreen extends StatelessWidget {
+  final String? email; // 네이버 로그인으로 받아온 이메일 등 사용자 정보를 받기 위해 추가
 
-  NaverPwdScreen({required this.email});
+  PwdScreen({this.email});
 
   final TextEditingController _passwordController = TextEditingController();
 

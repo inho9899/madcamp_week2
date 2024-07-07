@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'playlist_screen.dart';
-import 'package:just_audio/just_audio.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 class Tab2Screen extends StatefulWidget {
   @override
@@ -9,13 +9,12 @@ class Tab2Screen extends StatefulWidget {
 }
 
 class _Tab2ScreenState extends State<Tab2Screen> {
-  // 예시 데이터 (DB에서 가져온다고 가정)
-  final String albumImage = 'assets/images/album_cover.jpeg'; // 앨범 커버 이미지 경로
-  final String songTitle = 'DB에서 제목 가져오기'; // 노래 제목
-  final String songDescription = 'DB에서 아티스트명 가져오기'; // 노래 설명
-  final String songUrl = 'http://172.10.7.116/music'; // 서버 음악 파일 경로
+  final String albumImage = 'assets/images/album_cover.jpeg';
+  final String songTitle = 'DB에서 제목 가져오기';
+  final String songDescription = 'DB에서 아티스트명 가져오기';
+  final String songUrl = 'http://172.10.7.116:80/music';
 
-  final AudioPlayer _audioPlayer = AudioPlayer();
+  late AudioPlayer _audioPlayer;
   Duration _duration = Duration();
   Duration _position = Duration();
   bool isPlaying = false;
@@ -23,41 +22,52 @@ class _Tab2ScreenState extends State<Tab2Screen> {
   @override
   void initState() {
     super.initState();
+    _audioPlayer = AudioPlayer();
     _initAudioPlayer();
   }
 
   Future<void> _initAudioPlayer() async {
-    try {
-      await _audioPlayer.setUrl(songUrl);
-    } catch (e) {
-      print('Error setting URL: $e');
-    }
-
-    _audioPlayer.durationStream.listen((d) {
+    _audioPlayer.onDurationChanged.listen((Duration d) {
       setState(() {
-        _duration = d ?? Duration.zero;
+        _duration = d;
       });
     });
 
-    _audioPlayer.positionStream.listen((p) {
+    _audioPlayer.onPositionChanged.listen((Duration p) {
       setState(() {
         _position = p;
       });
     });
+
+    _audioPlayer.onPlayerComplete.listen((event) {
+      setState(() {
+        _position = Duration();
+        isPlaying = false;
+      });
+    });
   }
 
-  void _playMusic() {
-    _audioPlayer.play();
-    setState(() {
-      isPlaying = true;
-    });
+  void _playMusic() async {
+    try {
+      await _audioPlayer.setSource(UrlSource(songUrl));
+      _audioPlayer.play(UrlSource(songUrl));
+      setState(() {
+        isPlaying = true;
+      });
+    } catch (e) {
+      print('Error playing audio: $e');
+    }
   }
 
   void _pauseMusic() {
-    _audioPlayer.pause();
-    setState(() {
-      isPlaying = false;
-    });
+    try {
+      _audioPlayer.pause();
+      setState(() {
+        isPlaying = false;
+      });
+    } catch (e) {
+      print('Error pausing audio: $e');
+    }
   }
 
   String formatDuration(Duration duration) {
@@ -73,10 +83,6 @@ class _Tab2ScreenState extends State<Tab2Screen> {
   }
 
   void _addToPlaylist(BuildContext context) {
-    // 플레이리스트에 추가하는 로직
-    // 예: DB로 데이터를 넘기는 코드 추가
-
-    // 플레이리스트에 추가 완료 메시지
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text('플레이리스트에 추가되었습니다'),
@@ -92,7 +98,6 @@ class _Tab2ScreenState extends State<Tab2Screen> {
     );
   }
 
-  // 리뷰 작성
   void _writeReview(BuildContext context) {
     double _rating = 0.0;
 
@@ -137,9 +142,7 @@ class _Tab2ScreenState extends State<Tab2Screen> {
                 TextButton(
                   child: Text('저장'),
                   onPressed: () {
-                    // 리뷰와 별점을 저장하는 로직
-                    // 예: DB로 데이터를 넘기는 코드 추가
-                    print('별점: $_rating'); // 추후 DB로 넘기기 위한 로그
+                    print('별점: $_rating');
                     Navigator.of(context).pop();
                   },
                 ),
@@ -160,13 +163,13 @@ class _Tab2ScreenState extends State<Tab2Screen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black, // Scaffold 배경색을 검정으로 설정
+      backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.black,
       ),
       body: SingleChildScrollView(
         child: Container(
-          color: Colors.black, // Container 배경색을 검정으로 설정
+          color: Colors.black,
           padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -179,7 +182,7 @@ class _Tab2ScreenState extends State<Tab2Screen> {
               SizedBox(height: 20),
               Center(
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(16.0), // 모서리를 둥글게 설정
+                  borderRadius: BorderRadius.circular(16.0),
                   child: Image.asset(
                     albumImage,
                     height: 300,
@@ -208,15 +211,19 @@ class _Tab2ScreenState extends State<Tab2Screen> {
                     iconSize: 40,
                     onPressed: isPlaying ? _pauseMusic : _playMusic,
                   ),
-                  Slider(
-                    value: _position.inSeconds.toDouble(),
-                    min: 0.0,
-                    max: _duration.inSeconds.toDouble(),
-                    onChanged: (double value) {
-                      setState(() {
-                        _seekTo(value);
-                      });
-                    },
+                  Expanded(
+                    child: Slider(
+                      value: _position.inSeconds.toDouble(),
+                      min: 0.0,
+                      max: _duration.inSeconds.toDouble(),
+                      onChanged: (double value) {
+                        setState(() {
+                          _seekTo(value);
+                        });
+                      },
+                      activeColor: Colors.purple,
+                      inactiveColor: Colors.white,
+                    ),
                   ),
                   Text(
                     '${formatDuration(_position)} / ${formatDuration(_duration)}',
@@ -258,8 +265,8 @@ class _Tab2ScreenState extends State<Tab2Screen> {
                             '  리뷰 쓰러 가기',
                             style: TextStyle(
                               fontSize: 18,
-                              color: Color(0xFF89BF0F), // 사용자 지정 색상
-                              fontWeight: FontWeight.w800, // 볼드체 설정
+                              color: Color(0xFF89BF0F),
+                              fontWeight: FontWeight.w800,
                             ),
                           ),
                         ],

@@ -4,7 +4,9 @@
     <application
         android:label="madcamp_week2"
         android:name="android.app.Application"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        android:usesCleartextTraffic="true"
+        android:networkSecurityConfig="@xml/network_security_config">
 
         <!-- 카카오 로그인 커스텀 URL 스킴 설정 -->
         <activity

@@ -102,6 +102,7 @@ class Tab2Screen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+
               Text(
                 '오늘의 추천 플레이리스트',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),

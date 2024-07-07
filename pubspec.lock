@@ -143,7 +143,7 @@ packages:
     source: hosted
     version: "3.0.2"
   flutter_naver_login:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: flutter_naver_login
       sha256: "69d62da60e866b09894f2d632d7d1cb36eee17164b9e46e33d86ebee4b91cd42"
@@ -151,7 +151,7 @@ packages:
     source: hosted
     version: "1.8.0"
   flutter_rating_bar:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: flutter_rating_bar
       sha256: d2af03469eac832c591a1eba47c91ecc871fe5708e69967073c043b2d775ed93
@@ -169,7 +169,7 @@ packages:
     source: sdk
     version: "0.0.0"
   http:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: http
       sha256: "5895291c13fa8a3bd82e76d5627f69e0d85ca6a30dcac95c4ea19a5d555879c2"
@@ -201,7 +201,7 @@ packages:
     source: hosted
     version: "4.9.0"
   kakao_flutter_sdk:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: kakao_flutter_sdk
       sha256: cb417d69bf8ac63f2bcb68bc9c8e6b5c3b449a25efe38984180818b70511359c

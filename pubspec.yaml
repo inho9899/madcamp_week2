@@ -34,6 +34,7 @@ dependencies:
   flutter_naver_login : ^1.8.0
   flutter_rating_bar: ^4.0.0
   http: ^1.2.1
+  table_calendar: ^3.1.1
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

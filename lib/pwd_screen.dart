@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:madcamp_week2/preference_screen.dart';
 import 'home_screen.dart';
 
 class PwdScreen extends StatelessWidget {
@@ -6,26 +7,28 @@ class PwdScreen extends StatelessWidget {
 
   PwdScreen({this.email});
 
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _idController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  void _submitPassword(BuildContext context) {
-    if (_passwordController.text.isEmpty) {
+  void _submitDetails(BuildContext context) {
+    if (_nameController.text.isEmpty || _idController.text.isEmpty || _passwordController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('비밀번호를 입력해주세요'),
+          content: Text('모든 정보를 입력해주세요'),
           duration: Duration(seconds: 1),
         ),
       );
       return;
     }
 
-    // 패스워드를 DB에 저장하는 로직을 여기에 추가
-    // 예: 서버와 통신하여 비밀번호 저장
+    // 사용자 정보를 DB에 저장하는 로직을 여기에 추가
+    // 예: 서버와 통신하여 사용자 정보 저장
 
     // 저장 후 HomeScreen으로 이동
     Navigator.pushAndRemoveUntil(
       context,
-      MaterialPageRoute(builder: (context) => HomeScreen(kakaoUser: null, naverAccount: null)),
+      MaterialPageRoute(builder: (context) => PreferenceScreen()),
           (Route<dynamic> route) => false,
     );
   }
@@ -37,13 +40,14 @@ class PwdScreen extends StatelessWidget {
         backgroundColor: Colors.black,
       ),
       backgroundColor: Colors.black,
-      body: Padding(
+      body: SingleChildScrollView( // SingleChildScrollView를 추가하여 화면이 스크롤 가능하도록 함
         padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            SizedBox(height: 30), // 키보드가 열릴 때 상단 여백을 더 크게 설정하여 스크롤 여유를 확보
             Text(
-              '개인정보 보호를 위해',
+              '회원 등록을 위해',
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
@@ -51,44 +55,108 @@ class PwdScreen extends StatelessWidget {
               ),
             ),
             Text(
-              '비밀번호를 설정 해 해주세요!',
+              '필요한 정보를 입력해주세요!',
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
               ),
             ),
-            SizedBox(height: 80), // 문구와 TextField 사이의 간격
-            TextField(
-              controller: _passwordController,
-              style: TextStyle(color: Colors.white),
-              decoration: InputDecoration(
-                labelText: '비밀번호',
-                labelStyle: TextStyle(color: Colors.white),
-                border: UnderlineInputBorder(),
-                enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.grey),
+            SizedBox(height: 30),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TextField(
+                  controller: _nameController,
+                  style: TextStyle(color: Colors.white),
+                  decoration: InputDecoration(
+                    labelText: '이름',
+                    labelStyle: TextStyle(color: Colors.white),
+                    border: UnderlineInputBorder(),
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey),
+                    ),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black38),
+                    ),
+                    contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                  ),
                 ),
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black38),
+                SizedBox(height: 8),
+                Text(
+                  '  이름을 입력하세요',
+                  style: TextStyle(color: Colors.grey),
                 ),
-                contentPadding: EdgeInsets.symmetric(horizontal: 10),
-              ),
-              obscureText: true,
+              ],
+            ),
+            SizedBox(height: 30),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TextField(
+                  controller: _idController,
+                  style: TextStyle(color: Colors.white),
+                  decoration: InputDecoration(
+                    labelText: '아이디',
+                    labelStyle: TextStyle(color: Colors.white),
+                    border: UnderlineInputBorder(),
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey),
+                    ),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black38),
+                    ),
+                    contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                  ),
+                ),
+                SizedBox(height: 8),
+                Text(
+                  '  아이디를 입력하세요',
+                  style: TextStyle(color: Colors.grey),
+                ),
+              ],
+            ),
+            SizedBox(height: 30),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TextField(
+                  controller: _passwordController,
+                  style: TextStyle(color: Colors.white),
+                  decoration: InputDecoration(
+                    labelText: '비밀번호',
+                    labelStyle: TextStyle(color: Colors.white),
+                    border: UnderlineInputBorder(),
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey),
+                    ),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black38),
+                    ),
+                    contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                  ),
+                  obscureText: true,
+                ),
+                SizedBox(height: 8),
+                Text(
+                  '  비밀번호를 입력하세요',
+                  style: TextStyle(color: Colors.grey),
+                ),
+              ],
             ),
             SizedBox(height: 60),
             Container(
               width: 200,
               height: 50,
               child: ElevatedButton(
-                onPressed: () => _submitPassword(context),
+                onPressed: () => _submitDetails(context),
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
                 ),
                 child: Text(
-                  '확인',
+                  '입력 완료',
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 15,
@@ -98,7 +166,8 @@ class PwdScreen extends StatelessWidget {
                   ),
                 ),
               ),
-            )
+            ),
+            SizedBox(height: 30), // 하단 여백 추가
           ],
         ),
       ),

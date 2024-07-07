@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:flutter_naver_login/flutter_naver_login.dart';
 import 'id_login_screen.dart';
-import 'home_screen.dart';
 import 'register_screen.dart';
-import 'pwd_screen.dart'; // 추가
+import 'pwd_screen.dart';
+import 'home_screen.dart';
 
 class LoginPage extends StatelessWidget {
   // 카카오톡 로그인 처리
@@ -30,12 +30,22 @@ class LoginPage extends StatelessWidget {
       // 로그인 성공 후 사용자 정보 가져오기
       User user = await UserApi.instance.me();
       print('사용자 정보: ${user.toString()}');
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => PwdScreen(email: user.kakaoAccount?.email ?? 'unknown@example.com'),
-        ),
-      );
+
+
+      // 여기서 사용자 등록 여부를 확인하는 로직을 추가
+      bool isRegistered = await checkUserRegistration(user.kakaoAccount?.email ?? 'unknown@example.com');
+
+      if (isRegistered) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => HomeScreen(kakaoUser: user)),
+        );
+      } else {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => PwdScreen(email: user.kakaoAccount?.email ?? 'unknown@example.com')),
+        );
+      }
     } catch (error) {
       print('카카오 로그인 실패: $error');
     }
@@ -47,16 +57,34 @@ class LoginPage extends StatelessWidget {
       NaverLoginResult result = await FlutterNaverLogin.logIn();
       if (result.status == NaverLoginStatus.loggedIn) {
         print('네이버로 로그인 성공: ${result.account}');
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => PwdScreen(email: result.account.email)),
-        );
+
+        // 여기서 사용자 등록 여부를 확인하는 로직을 추가
+        bool isRegistered = await checkUserRegistration(result.account.email);
+
+        if (isRegistered) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => HomeScreen(naverAccount: result.account)),
+          );
+        } else {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => PwdScreen(email: result.account.email)),
+          );
+        }
       } else {
         print('네이버 로그인 실패: ${result.errorMessage}');
       }
     } catch (error) {
       print('네이버 로그인 실패: $error');
     }
+  }
+
+  Future<bool> checkUserRegistration(String email) async {
+    // 여기서 데이터베이스와 통신하여 사용자가 등록되었는지 확인하는 로직을 추가
+    // 예: 서버와 통신하여 사용자 등록 여부 확인
+    // 현재는 예시로 false를 반환
+    return false;
   }
 
   @override

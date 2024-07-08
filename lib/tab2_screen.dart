@@ -85,7 +85,7 @@ class _Tab2ScreenState extends State<Tab2Screen> {
   void _addToPlaylist(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('플레이리스트에 추가되었습니다'),
+        content: Text('Added to playlist'),
         duration: Duration(seconds: 1),
       ),
     );
@@ -107,11 +107,11 @@ class _Tab2ScreenState extends State<Tab2Screen> {
         return StatefulBuilder(
           builder: (context, setState) {
             return AlertDialog(
-              title: Text('리뷰 작성'),
+              title: Text('Write a Review'),
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text('별점을 선택해주세요'),
+                  Text('Please select a rating'),
                   SizedBox(height: 8),
                   RatingBar.builder(
                     initialRating: 0,
@@ -134,15 +134,15 @@ class _Tab2ScreenState extends State<Tab2Screen> {
               ),
               actions: [
                 TextButton(
-                  child: Text('취소'),
+                  child: Text('Cancel'),
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
                 ),
                 TextButton(
-                  child: Text('저장'),
+                  child: Text('Save'),
                   onPressed: () {
-                    print('별점: $_rating');
+                    print('Rating: $_rating');
                     Navigator.of(context).pop();
                   },
                 ),
@@ -175,7 +175,7 @@ class _Tab2ScreenState extends State<Tab2Screen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                '오늘의 추천 플레이리스트',
+                'Today\'s Recommended Playlist',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
                 textAlign: TextAlign.center,
               ),
@@ -221,7 +221,7 @@ class _Tab2ScreenState extends State<Tab2Screen> {
                           _seekTo(value);
                         });
                       },
-                      activeColor: Colors.red,
+                      activeColor: Colors.white,
                       inactiveColor: Colors.white,
                     ),
                   ),
@@ -237,57 +237,114 @@ class _Tab2ScreenState extends State<Tab2Screen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    GestureDetector(
-                      onTap: () => _addToPlaylist(context),
-                      child: Row(
-                        children: [
-                          Image.asset('assets/icons/plus_icon.png', width: 25, height: 25),
-                          SizedBox(width: 8),
-                          Text(
-                            '  플레이리스트에 추가하기',
-                            style: TextStyle(
-                              fontSize: 18,
-                              color: Color(0xFF89BF0F),
-                              fontWeight: FontWeight.w800,
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            height: 50,
+                            child: ElevatedButton(
+                              onPressed: () => _addToPlaylist(context),
+                              style: ElevatedButton.styleFrom(
+                                padding: EdgeInsets.zero, // 패딩 제거
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                              ),
+                              child: Ink(
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: [Colors.pinkAccent, Colors.pinkAccent],
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                  ),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    'Add to playlist',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                        SizedBox(width: 8),
+                        Expanded(
+                          child: Container(
+                            height: 50,
+                            child: ElevatedButton(
+                              onPressed: () => _writeReview(context),
+                              style: ElevatedButton.styleFrom(
+                                padding: EdgeInsets.zero, // 패딩 제거
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                              ),
+                              child: Ink(
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: [Colors.pinkAccent, Colors.pinkAccent],
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                  ),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    'Write a Review',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                     SizedBox(height: 16),
-                    GestureDetector(
-                      onTap: () => _writeReview(context),
-                      child: Row(
-                        children: [
-                          Image.asset('assets/icons/plus_icon.png', width: 25, height: 25),
-                          SizedBox(width: 8),
-                          Text(
-                            '  리뷰 쓰러 가기',
-                            style: TextStyle(
-                              fontSize: 18,
-                              color: Color(0xFF89BF0F),
-                              fontWeight: FontWeight.w800,
+                    Container(
+                      height: 50,
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: () => _goToPlaylist(context),
+                        style: ElevatedButton.styleFrom(
+                          padding: EdgeInsets.zero, // 패딩 제거
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                        child: Ink(
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [Colors.pinkAccent, Colors.pinkAccent],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: Container(
+                            alignment: Alignment.center,
+                            child: Text(
+                              'Go to Playlist',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 16),
-                    GestureDetector(
-                      onTap: () => _goToPlaylist(context),
-                      child: Row(
-                        children: [
-                          Image.asset('assets/icons/plus_icon.png', width: 25, height: 25),
-                          SizedBox(width: 8),
-                          Text(
-                            '  플레이리스트로 이동',
-                            style: TextStyle(
-                              fontSize: 18,
-                              color: Color(0xFF89BF0F),
-                              fontWeight: FontWeight.w800,
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
                     ),
                   ],

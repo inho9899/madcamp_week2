@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'preference_screen.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class RegisterScreen extends StatelessWidget {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _idController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  void _register(BuildContext context) {
+  void _register(BuildContext context) async {
     if (_nameController.text.isEmpty || _idController.text.isEmpty || _passwordController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -17,14 +19,43 @@ class RegisterScreen extends StatelessWidget {
       return;
     }
 
-    // 회원가입 로직을 여기에 추가
-    // ex) 서버와 통신하여 회원가입 처리
-
-    // 회원가입 성공 시 음악 취향 조사 페이지로 이동
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => PreferenceScreen()),
+    // 서버와 통신하여 회원가입 처리
+    final response = await http.post(
+      Uri.parse('http://172.10.7.126/registerUser'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, dynamic>{
+        'name': _nameController.text,
+        'id': _idController.text,
+        'password': _passwordController.text,
+      }),
     );
+
+    if (response.statusCode == 200) {
+      final responseData = jsonDecode(response.body);
+      final userId = responseData['userId'];
+
+      // 회원가입 성공 시 음악 취향 조사 페이지로 이동
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => PreferenceScreen(
+            name: _nameController.text,
+            id: _idController.text,
+            password: _passwordController.text,
+            token_id: _idController.text,
+          ),
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('회원가입 실패. 다시 시도해주세요.'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+    }
   }
 
   @override

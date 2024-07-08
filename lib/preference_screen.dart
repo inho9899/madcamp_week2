@@ -1,7 +1,16 @@
 import 'package:flutter/material.dart';
 import 'home_screen.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class PreferenceScreen extends StatefulWidget {
+  final String name;
+  final String id;
+  final String password;
+  final String token_id;
+
+  PreferenceScreen({required this.name, required this.id, required this.password, required this.token_id});
+
   @override
   _PreferenceScreenState createState() => _PreferenceScreenState();
 }
@@ -28,8 +37,12 @@ class _PreferenceScreenState extends State<PreferenceScreen> {
     });
   }
 
+  String _generateBinaryString() {
+    return preferences.map((preference) => selectedPreferences.contains(preference['text']) ? '1' : '0').join('');
+  }
+
   // HomeScreen 으로 돌아가기
-  void _completeSurvey(BuildContext context) {
+  void _completeSurvey(BuildContext context) async {
     if (selectedPreferences.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -40,17 +53,33 @@ class _PreferenceScreenState extends State<PreferenceScreen> {
       return;
     }
 
-    // 여기에 선택한 취향을 DB에 저장하는 로직을 추가
+    String binaryString = _generateBinaryString();
 
-
-    Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(builder: (context) => HomeScreen(kakaoUser: null, naverAccount: null)),
-          (Route<dynamic> route) => false,
+    // 선택한 취향을 DB에 저장하는 로직 추가
+    final response = await http.post(
+      Uri.parse('http://172.10.7.126/registerUser'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, dynamic>{
+        'name': widget.name,
+        'id': widget.id,
+        'password': widget.password,
+        'preferences': binaryString,
+        'token_id' : widget.token_id
+      }),
     );
+
+    if (response.statusCode == 200) {
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => HomeScreen(kakaoUser: null, naverAccount: null)),
+            (Route<dynamic> route) => false,
+      );
+    } else {
+      throw Exception('Failed to save preferences');
+    }
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -148,7 +177,6 @@ class _PreferenceScreenState extends State<PreferenceScreen> {
                     style: TextStyle(
                       fontSize: 17,
                       color: Colors.white, // 텍스트 색상 흰색으로 설정
-                      //decoration: TextDecoration.underline,
                     ),
                   ),
                 ),

@@ -5,6 +5,8 @@ import 'id_login_screen.dart';
 import 'register_screen.dart';
 import 'pwd_screen.dart';
 import 'home_screen.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class LoginPage extends StatelessWidget {
   // 카카오톡 로그인 처리
@@ -43,7 +45,7 @@ class LoginPage extends StatelessWidget {
       } else {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => PwdScreen(email: user.kakaoAccount?.email ?? 'unknown@example.com')),
+          MaterialPageRoute(builder: (context) => PwdScreen(id: user.id.toString())),
         );
       }
     } catch (error) {
@@ -58,20 +60,12 @@ class LoginPage extends StatelessWidget {
       if (result.status == NaverLoginStatus.loggedIn) {
         print('네이버로 로그인 성공: ${result.account}');
 
-        // 여기서 사용자 등록 여부를 확인하는 로직을 추가
-        bool isRegistered = await checkUserRegistration(result.account.email);
+        print("hello");
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => PwdScreen(id: result.account.id.toString())),
+        );
 
-        if (isRegistered) {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => HomeScreen(naverAccount: result.account)),
-          );
-        } else {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => PwdScreen(email: result.account.email)),
-          );
-        }
       } else {
         print('네이버 로그인 실패: ${result.errorMessage}');
       }
@@ -80,12 +74,28 @@ class LoginPage extends StatelessWidget {
     }
   }
 
+  // 여기서 데이터베이스와 통신하여 사용자가 등록되었는지 확인하는 로직을 추가
+  // 예: 서버와 통신하여 사용자 등록 여부 확인
+  // 현재는 예시로 false를 반환
   Future<bool> checkUserRegistration(String email) async {
-    // 여기서 데이터베이스와 통신하여 사용자가 등록되었는지 확인하는 로직을 추가
-    // 예: 서버와 통신하여 사용자 등록 여부 확인
-    // 현재는 예시로 false를 반환
-    return false;
+    final response = await http.post(
+      Uri.parse('http://172.10.7.126/checkUserRegistration'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'email': email,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      final jsonResponse = json.decode(response.body);
+      return jsonResponse['isRegistered'];
+    } else {
+      throw Exception('Failed to check user registration');
+    }
   }
+
 
   @override
   Widget build(BuildContext context) {

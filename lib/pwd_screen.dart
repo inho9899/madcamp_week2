@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:madcamp_week2/preference_screen.dart';
-import 'home_screen.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class PwdScreen extends StatelessWidget {
-  final String? email; // 네이버 로그인으로 받아온 이메일 등 사용자 정보를 받기 위해 추가
+  final String? id; // 네이버 로그인으로 받아온 이메일 등 사용자 정보를 받기 위해 추가
 
-  PwdScreen({this.email});
+  PwdScreen({this.id});
 
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _idController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  void _submitDetails(BuildContext context) {
+  void _submitDetails(BuildContext context) async {
     if (_nameController.text.isEmpty || _idController.text.isEmpty || _passwordController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -22,14 +23,16 @@ class PwdScreen extends StatelessWidget {
       return;
     }
 
-    // 사용자 정보를 DB에 저장하는 로직을 여기에 추가
-    // 예: 서버와 통신하여 사용자 정보 저장
-
-    // 저장 후 HomeScreen으로 이동
-    Navigator.pushAndRemoveUntil(
+    Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => PreferenceScreen()),
-          (Route<dynamic> route) => false,
+      MaterialPageRoute(
+        builder: (context) => PreferenceScreen(
+          name: _nameController.text,
+          id: _idController.text,
+          password: _passwordController.text,
+          token_id : id!
+        ),
+      ),
     );
   }
 

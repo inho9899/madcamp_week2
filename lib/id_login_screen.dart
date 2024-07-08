@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import 'home_screen.dart';
 
 class IDLoginScreen extends StatelessWidget {
@@ -16,17 +18,34 @@ class IDLoginScreen extends StatelessWidget {
       return;
     }
 
-    // 아이디와 비밀번호로 로그인 처리 로직을 여기에 추가
-    // ex) 서버와 통신하여 로그인 확인
-
-    // 로그인 성공 시 HomeScreen으로 이동
-    Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(
-        builder: (context) => HomeScreen(kakaoUser: null, naverAccount: null),
-      ),
-          (Route<dynamic> route) => false,
+    final response = await http.post(
+      Uri.parse('http://172.10.7.126/checkUser'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, dynamic>{
+        'login_method' : "NONE",
+        'token_id' : _idController.text.toString()
+      }),
     );
+
+    bool isRegistered = (response.statusCode == 200);
+    if (isRegistered) {
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => HomeScreen(token: _idController.text.toString(), login_method: "NONE"),
+        ),
+            (Route<dynamic> route) => false,
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('로그인 오류가 발생했습니다.'),
+          duration: Duration(seconds: 1),
+        ),
+      );
+    }
   }
 
   @override
@@ -37,15 +56,15 @@ class IDLoginScreen extends StatelessWidget {
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back,
-            color: Colors.grey, // 화살표 색상
-            size: 30, // 화살표 크기
+            color: Colors.grey,
+            size: 30,
           ),
           onPressed: () {
             Navigator.of(context).pop();
           },
         ),
       ),
-      backgroundColor: Colors.black, // 배경색을 검정으로 설정
+      backgroundColor: Colors.black,
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -56,21 +75,21 @@ class IDLoginScreen extends StatelessWidget {
               children: [
                 TextField(
                   controller: _idController,
-                  style: TextStyle(color: Colors.white), // 입력 텍스트 색상을 흰색으로 설정
+                  style: TextStyle(color: Colors.white),
                   decoration: InputDecoration(
                     labelText: '아이디',
-                    labelStyle: TextStyle(color: Colors.white), // 레이블 텍스트 색상
-                    border: UnderlineInputBorder(), // 밑줄 스타일 테두리
+                    labelStyle: TextStyle(color: Colors.white),
+                    border: UnderlineInputBorder(),
                     enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.grey), // 기본 밑줄 색상
+                      borderSide: BorderSide(color: Colors.grey),
                     ),
                     focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blue), // 포커스된 밑줄 색상
+                      borderSide: BorderSide(color: Colors.blue),
                     ),
                     contentPadding: EdgeInsets.symmetric(horizontal: 5),
                   ),
                 ),
-                SizedBox(height: 8), // TextField와 문구 사이의 간격
+                SizedBox(height: 8),
                 Text(
                   '  아이디를 입력하세요',
                   style: TextStyle(color: Colors.grey),
@@ -83,23 +102,22 @@ class IDLoginScreen extends StatelessWidget {
               children: [
                 TextField(
                   controller: _passwordController,
-                  style: TextStyle(color: Colors.white), // 입력 텍스트 색상을 흰색으로 설정
+                  style: TextStyle(color: Colors.white),
                   decoration: InputDecoration(
                     labelText: '비밀번호',
-                    labelStyle: TextStyle(color: Colors.white), // 레이블 텍스트 색상
-                    border: UnderlineInputBorder(), // 밑줄 스타일 테두리
+                    labelStyle: TextStyle(color: Colors.white),
+                    border: UnderlineInputBorder(),
                     enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.grey), // 기본 밑줄 색상
+                      borderSide: BorderSide(color: Colors.grey),
                     ),
                     focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.grey
-                      ), // 포커스된 밑줄 색상
+                      borderSide: BorderSide(color: Colors.grey),
                     ),
                     contentPadding: EdgeInsets.symmetric(horizontal: 10),
                   ),
                   obscureText: true,
                 ),
-                SizedBox(height: 8), // TextField와 문구 사이의 간격
+                SizedBox(height: 8),
                 Text(
                   '   비밀번호를 입력하세요',
                   style: TextStyle(color: Colors.grey),
@@ -114,7 +132,7 @@ class IDLoginScreen extends StatelessWidget {
                 onPressed: () => _loginWithID(context),
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12), // 모서리 반경을 12로 설정
+                    borderRadius: BorderRadius.circular(12),
                   ),
                 ),
                 child: Text(

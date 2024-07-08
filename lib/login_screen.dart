@@ -33,19 +33,31 @@ class LoginPage extends StatelessWidget {
       User user = await UserApi.instance.me();
       print('사용자 정보: ${user.toString()}');
 
+      final response = await http.post(
+        Uri.parse('http://172.10.7.126/checkUser'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, dynamic>{
+          'login_method' : "KAKAO",
+          'token_id' : user.id.toString()
+        }),
+      );
+
+      // 200 => success, 300 => fail
 
       // 여기서 사용자 등록 여부를 확인하는 로직을 추가
-      bool isRegistered = await checkUserRegistration(user.kakaoAccount?.email ?? 'unknown@example.com');
+      bool isRegistered = (response.statusCode == 200);
 
       if (isRegistered) {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => HomeScreen(kakaoUser: user)),
+          MaterialPageRoute(builder: (context) => HomeScreen(login_method: "KAKAO", token: user.id.toString())),
         );
       } else {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => PwdScreen(id: user.id.toString())),
+          MaterialPageRoute(builder: (context) => PwdScreen(id: user.id.toString(), type : "KAKAO")),
         );
       }
     } catch (error) {
@@ -56,16 +68,36 @@ class LoginPage extends StatelessWidget {
   // 네이버 로그인 처리
   Future<void> _loginWithNaver(BuildContext context) async {
     try {
-      NaverLoginResult result = await FlutterNaverLogin.logIn();
+      NaverLoginResult? result = await FlutterNaverLogin.logIn();
       if (result.status == NaverLoginStatus.loggedIn) {
         print('네이버로 로그인 성공: ${result.account}');
 
         print("hello");
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => PwdScreen(id: result.account.id.toString())),
+
+        final response = await http.post(
+          Uri.parse('http://172.10.7.126/checkUser'),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+          },
+          body: jsonEncode(<String, dynamic>{
+            'login_method' : "NAVER",
+            'token_id' : result.account.id.toString()
+          }),
         );
 
+        bool isRegistered = (response.statusCode == 200);
+
+        if (isRegistered) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => HomeScreen(login_method: "NAVER", token : result.account.id.toString())),
+          );
+        } else {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => PwdScreen(id: result.account.id.toString(), type:"NAVER")),
+          );
+        }
       } else {
         print('네이버 로그인 실패: ${result.errorMessage}');
       }
@@ -73,29 +105,6 @@ class LoginPage extends StatelessWidget {
       print('네이버 로그인 실패: $error');
     }
   }
-
-  // 여기서 데이터베이스와 통신하여 사용자가 등록되었는지 확인하는 로직을 추가
-  // 예: 서버와 통신하여 사용자 등록 여부 확인
-  // 현재는 예시로 false를 반환
-  Future<bool> checkUserRegistration(String email) async {
-    final response = await http.post(
-      Uri.parse('http://172.10.7.126/checkUserRegistration'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, String>{
-        'email': email,
-      }),
-    );
-
-    if (response.statusCode == 200) {
-      final jsonResponse = json.decode(response.body);
-      return jsonResponse['isRegistered'];
-    } else {
-      throw Exception('Failed to check user registration');
-    }
-  }
-
 
   @override
   Widget build(BuildContext context) {

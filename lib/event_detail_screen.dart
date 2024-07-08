@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'tab3_screen.dart';
 
@@ -33,21 +34,15 @@ class EventDetailScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Container(
-                width: double.infinity,
-                height: 200, // 높이를 줄임
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16.0),
-                  color: Colors.white,
-                ),
-                child: Center(
-                  child: Text(
-                    event.detailInfo, // tab3 에서의 detailinfo 가져옴
-                    style: TextStyle(fontSize: 20, color: Colors.black),
-                    textAlign: TextAlign.center,
-                  ),
+            Container(
+              width: 280,
+              height: 400, // 원하는 높이로 설정
+              decoration: BoxDecoration(
+                color: Colors.white,
+              ),
+              child: ClipRRect(
+                child: Image.asset(
+                  event.imagePath, // 이미지 경로를 사용하여 이미지 표시
                 ),
               ),
             ),
@@ -56,7 +51,7 @@ class EventDetailScreen extends StatelessWidget {
               alignment: Alignment.centerLeft,
               child: Text(
                 event.detailInfo,
-                style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold), // 글자 색상을 흰색으로 변경
+                style: TextStyle(color: Colors.white, fontSize: 21, fontWeight: FontWeight.bold), // 글자 색상을 흰색으로 변경
               ),
             ),
             SizedBox(height: 30),
@@ -75,7 +70,7 @@ class EventDetailScreen extends StatelessWidget {
                 style: TextStyle(color: Colors.white, fontSize: 19),
               ),
             ),
-            SizedBox(height: 30),
+            SizedBox(height: 50),
             Container(
               width: 250, // 원하는 너비로 설정
               height: 50, // 원하는 높이로 설정
@@ -90,17 +85,30 @@ class EventDetailScreen extends StatelessWidget {
                   );
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xFFB2E545),
-                  foregroundColor: Colors.black,
+                  padding: EdgeInsets.zero, // 패딩을 제거
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
                 ),
-                child: Text(
-                  '참여하기',
-                  style: TextStyle(
-                    fontSize: 18, // 원하는 글자 크기
-                    fontWeight: FontWeight.bold, // 볼드체 설정
+                child: Ink(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [Colors.purple, Colors.blueAccent],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Container(
+                    alignment: Alignment.center,
+                    child: Text(
+                      '참여하기',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18, // 원하는 글자 크기
+                        fontWeight: FontWeight.bold,// 볼드체 설정
+                      ),
+                    ),
                   ),
                 ),
               ),

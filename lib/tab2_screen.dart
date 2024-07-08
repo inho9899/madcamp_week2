@@ -221,7 +221,7 @@ class _Tab2ScreenState extends State<Tab2Screen> {
                           _seekTo(value);
                         });
                       },
-                      activeColor: Colors.purple,
+                      activeColor: Colors.red,
                       inactiveColor: Colors.white,
                     ),
                   ),

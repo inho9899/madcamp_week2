@@ -34,17 +34,37 @@ class Tab1Screen extends StatelessWidget {
                   child: ElevatedButton(
                     onPressed: () => _checkAttendance(context),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFFB2E545),
-                      foregroundColor: Colors.black,
+                      padding: EdgeInsets.zero, // 패딩 제거
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
-                    child: Text(
-                      '출석체크 하기',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
+                    child: Ink(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [Colors.pinkAccent, Colors.deepPurple],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Container(
+                        alignment: Alignment.center,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.check_circle, color: Colors.white),
+                            SizedBox(width: 8),
+                            Text(
+                              '출석체크 하기',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -69,41 +89,51 @@ class Tab1Screen extends StatelessWidget {
                   height: 400,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16.0),
-                    color: Colors.white,
+                    color: Colors.grey[900], // 더 어두운 배경 색상
                   ),
                   child: TableCalendar(
                     focusedDay: DateTime.now(),
                     firstDay: DateTime.utc(2020, 1, 1),
                     lastDay: DateTime.utc(2030, 12, 31),
                     calendarStyle: CalendarStyle(
+                      defaultTextStyle: TextStyle(color: Colors.white),
+                      weekendTextStyle: TextStyle(color: Colors.white70),
+                      todayTextStyle: TextStyle(color: Colors.black),
                       todayDecoration: BoxDecoration(
-                        color: Colors.blue,
+                        color: Color(0xD1B5B3B3),
                         shape: BoxShape.circle,
                       ),
+                      selectedTextStyle: TextStyle(color: Colors.white),
                       selectedDecoration: BoxDecoration(
-                        color: Colors.green,
+                        color: Colors.blueAccent,
                         shape: BoxShape.circle,
                       ),
+                      outsideDaysVisible: false,
                     ),
-
-                    // 출석체크한 날짜를 표시하는 로직 추가
-
-
                     headerStyle: HeaderStyle(
-                      formatButtonVisible: false,
+                      titleTextStyle: TextStyle(color: Colors.white, fontSize: 16),
+                      formatButtonVisible: false, // '2week' 버튼 숨기기
+                      leftChevronIcon: Icon(
+                        Icons.chevron_left,
+                        color: Colors.white,
+                      ),
+                      rightChevronIcon: Icon(
+                        Icons.chevron_right,
+                        color: Colors.white,
+                      ),
                       titleCentered: true,
                     ),
+                    // 출석체크한 날짜를 표시하는 로직 추가
                   ),
                 ),
               ),
-
               SizedBox(height: 20),
               Text(
                 '예정된 활동',
                 style: TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
-                  color: Colors.white,
+                  color: Colors.white, // 지정된 색상으로 변경
                 ),
               ),
               SizedBox(height: 8),
@@ -116,7 +146,7 @@ class Tab1Screen extends StatelessWidget {
                       margin: EdgeInsets.symmetric(vertical: 8.0),
                       padding: EdgeInsets.all(16.0),
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color : Color(0xFFD6D6D6), // 지정된 색상으로 변경
                         borderRadius: BorderRadius.circular(16.0),
                       ),
                       child: Text(
@@ -136,7 +166,7 @@ class Tab1Screen extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
-                  color: Colors.white,
+                  color: Colors.white, // 지정된 색상으로 변경
                 ),
               ),
               SizedBox(height: 8),
@@ -149,7 +179,7 @@ class Tab1Screen extends StatelessWidget {
                       margin: EdgeInsets.symmetric(vertical: 8.0),
                       padding: EdgeInsets.all(16.0),
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: Color(0xFFD6D6D6), // 지정된 색상으로 변경
                         borderRadius: BorderRadius.circular(16.0),
                       ),
                       child: Text(

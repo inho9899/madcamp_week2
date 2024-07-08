@@ -69,6 +69,10 @@ flutter:
     - assets/images/album_cover.jpeg
     - assets/icons/plus_icon.png
     - assets/music/3.mp3
+    - assets/images/christopher.png
+    - assets/images/iu.png
+    - assets/images/ive.png
+    - assets/images/yoonha.png
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

@@ -5,8 +5,9 @@ import 'dart:convert';
 
 class PwdScreen extends StatelessWidget {
   final String? id; // 네이버 로그인으로 받아온 이메일 등 사용자 정보를 받기 위해 추가
+  final String? login_method;
 
-  PwdScreen({this.id});
+  PwdScreen({this.id, this.login_method});
 
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _idController = TextEditingController();
@@ -30,7 +31,8 @@ class PwdScreen extends StatelessWidget {
           name: _nameController.text,
           id: _idController.text,
           password: _passwordController.text,
-          token_id : id!
+          token_id : id!,
+          type : login_method!
         ),
       ),
     );

@@ -19,43 +19,19 @@ class RegisterScreen extends StatelessWidget {
       return;
     }
 
-    // 서버와 통신하여 회원가입 처리
-    final response = await http.post(
-      Uri.parse('http://172.10.7.126/registerUser'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, dynamic>{
-        'name': _nameController.text,
-        'id': _idController.text,
-        'password': _passwordController.text,
-      }),
-    );
-
-    if (response.statusCode == 200) {
-      final responseData = jsonDecode(response.body);
-      final userId = responseData['userId'];
-
-      // 회원가입 성공 시 음악 취향 조사 페이지로 이동
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => PreferenceScreen(
+    // 회원가입 성공 시 음악 취향 조사 페이지로 이동
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => PreferenceScreen(
             name: _nameController.text,
             id: _idController.text,
             password: _passwordController.text,
             token_id: _idController.text,
-          ),
+            type : "NONE"
         ),
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('회원가입 실패. 다시 시도해주세요.'),
-          duration: Duration(seconds: 2),
-        ),
-      );
-    }
+      ),
+    );
   }
 
   @override

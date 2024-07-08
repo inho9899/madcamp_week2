@@ -23,7 +23,7 @@ class IDLoginScreen extends StatelessWidget {
     Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(
-        builder: (context) => HomeScreen(kakaoUser: null, naverAccount: null),
+        builder: (context) => HomeScreen(token: _idController.toString(), login_method: "NONE"),
       ),
           (Route<dynamic> route) => false,
     );

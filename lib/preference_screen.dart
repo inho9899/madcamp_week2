@@ -8,8 +8,9 @@ class PreferenceScreen extends StatefulWidget {
   final String id;
   final String password;
   final String token_id;
+  final String type;
 
-  PreferenceScreen({required this.name, required this.id, required this.password, required this.token_id});
+  PreferenceScreen({required this.name, required this.id, required this.password, required this.token_id, required this.type});
 
   @override
   _PreferenceScreenState createState() => _PreferenceScreenState();
@@ -66,14 +67,15 @@ class _PreferenceScreenState extends State<PreferenceScreen> {
         'id': widget.id,
         'password': widget.password,
         'preferences': binaryString,
-        'token_id' : widget.token_id
+        'token_id' : widget.token_id,
+        'token_type' : widget.type
       }),
     );
 
     if (response.statusCode == 200) {
       Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (context) => HomeScreen(kakaoUser: null, naverAccount: null)),
+        MaterialPageRoute(builder: (context) => HomeScreen(token : widget.token_id, login_method: widget.type)),
             (Route<dynamic> route) => false,
       );
     } else {

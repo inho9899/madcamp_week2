@@ -8,10 +8,10 @@ import 'tab2_screen.dart';
 import 'tab3_screen.dart';
 
 class HomeScreen extends StatefulWidget {
-  final User? kakaoUser;
-  final NaverAccountResult? naverAccount;
+  final String? token;
+  final String? login_method;
 
-  HomeScreen({this.kakaoUser, this.naverAccount});
+  HomeScreen({this.token, this.login_method});
 
   @override
   _HomeScreenState createState() => _HomeScreenState();

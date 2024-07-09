@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'playlist_screen.dart';
 import 'package:audioplayers/audioplayers.dart';
+// import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
 
 class Tab2Screen extends StatefulWidget {
   @override
@@ -9,10 +13,11 @@ class Tab2Screen extends StatefulWidget {
 }
 
 class _Tab2ScreenState extends State<Tab2Screen> {
-  final String albumImage = 'assets/images/album_cover.jpeg';
-  final String songTitle = 'DB에서 제목 가져오기';
-  final String songDescription = 'DB에서 아티스트명 가져오기';
+  final String songTitleUrl = 'http://172.10.7.116:80/title';
+  final String songArtistUrl = 'http://172.10.7.116:80/artist';
   final String songUrl = 'http://172.10.7.116:80/music';
+  final String albumUrl = 'http://172.10.7.116:80/music_image';
+
 
   late AudioPlayer _audioPlayer;
   Duration _duration = Duration();
@@ -21,12 +26,36 @@ class _Tab2ScreenState extends State<Tab2Screen> {
 
   final ValueNotifier<bool> isDialOpen = ValueNotifier(false);
 
+  String songTitle = "Loading...";  // 초기 값 설정
+  String songArtist = "Loading...";  // 초기 값 설정
+
   @override
   void initState() {
     super.initState();
     _audioPlayer = AudioPlayer();
     _initAudioPlayer();
+    _fetchSongDetails();
+    _playMusic(); // 화면이 로드될 때 음악을 자동으로 재생
   }
+
+  Future<void> _fetchSongDetails() async {
+    try {
+      final titleResponse = await http.get(Uri.parse(songTitleUrl));
+      final artistResponse = await http.get(Uri.parse(songArtistUrl));
+
+      if (titleResponse.statusCode == 200 && artistResponse.statusCode == 200) {
+        setState(() {
+          songTitle = titleResponse.body;
+          songArtist = artistResponse.body;
+        });
+      } else {
+        print('Failed to load song details');
+      }
+    } catch (e) {
+      print('Error loading song details: $e');
+    }
+  }
+
 
   Future<void> _initAudioPlayer() async {
     _audioPlayer.onDurationChanged.listen((Duration d) {
@@ -196,8 +225,7 @@ class _Tab2ScreenState extends State<Tab2Screen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         IconButton(
-                          icon: Icon(Icons.rate_review, color: Color(
-                              0xFFB6B6B6)),
+                          icon: Icon(Icons.rate_review, color: Color(0xFFB6B6B6)),
                           onPressed: () => _writeReview(context),
                         ),
                         SizedBox(width: 170),
@@ -206,8 +234,7 @@ class _Tab2ScreenState extends State<Tab2Screen> {
                           onPressed: () => _addToPlaylist(context),
                         ),
                         IconButton(
-                          icon: Icon(Icons.playlist_add_check_sharp, color: Color(
-                              0xFF00E86C)),
+                          icon: Icon(Icons.playlist_add_check_sharp, color: Color(0xFF00E86C)),
                           onPressed: () => _goToPlaylist(context),
                         ),
                       ],
@@ -215,8 +242,8 @@ class _Tab2ScreenState extends State<Tab2Screen> {
                     SizedBox(height: 10),
                     ClipRRect(
                       borderRadius: BorderRadius.circular(16.0),
-                      child: Image.asset(
-                        albumImage,
+                      child: Image.network(
+                        albumUrl,
                         height: 300,
                         fit: BoxFit.cover,
                       ),
@@ -229,7 +256,7 @@ class _Tab2ScreenState extends State<Tab2Screen> {
                     ),
                     SizedBox(height: 10),
                     Text(
-                      songDescription,
+                      songArtist,
                       style: TextStyle(fontSize: 16, color: Colors.grey),
                       textAlign: TextAlign.center,
                     ),

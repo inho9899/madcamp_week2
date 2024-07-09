@@ -1,8 +1,4 @@
-// 로그인 완료 후 tab1,2,3 나오도록
-
 import 'package:flutter/material.dart';
-import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
-import 'package:flutter_naver_login/flutter_naver_login.dart';
 import 'tab1_screen.dart';
 import 'tab2_screen.dart';
 import 'tab3_screen.dart';
@@ -39,27 +35,39 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Tab 1',
+      bottomNavigationBar: BottomAppBar(
+        color: Colors.black,
+        child: Container(
+          height: 60.0, // 높이를 60으로 설정
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              buildNavItem(Icons.person, 0, size: 30.0),
+              buildNavItem(Icons.library_music_rounded, 1, size: 30.0),
+              buildNavItem(Icons.event_available, 2, size: 30.0),
+            ],
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.business),
-            label: 'Tab 2',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.school),
-            label: 'Tab 3',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-        backgroundColor: Colors.black, // 네비게이션 바 배경색을 검정으로 설정
-        selectedItemColor: Colors.white, // 선택된 아이템 색상을 흰색으로 설정
-        unselectedItemColor: Colors.grey, // 선택되지 않은 아이템 색상을 회색으로 설정
-        type: BottomNavigationBarType.fixed, // 네비게이션 바 타입을 fixed로 설정
+        ),
+      ),
+    );
+  }
+
+  Widget buildNavItem(IconData icon, int index, {double size = 30.0}) {
+    bool isSelected = _selectedIndex == index;
+    return GestureDetector(
+      onTap: () => _onItemTapped(index),
+      child: AnimatedContainer(
+        duration: Duration(milliseconds: 300),
+        padding: const EdgeInsets.all(10.0),
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: isSelected ? Colors.white.withOpacity(0.2) : Colors.transparent,
+        ),
+        child: Icon(
+          icon,
+          color: isSelected ? Colors.white : Colors.grey,
+          size: size, // 아이콘 크기 설정
+        ),
       ),
     );
   }

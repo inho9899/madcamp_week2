@@ -54,11 +54,11 @@ class EventDetailScreen extends StatelessWidget {
                 style: TextStyle(color: Colors.white, fontSize: 21, fontWeight: FontWeight.bold), // 글자 색상을 흰색으로 변경
               ),
             ),
-            SizedBox(height: 30),
+            SizedBox(height: 15),
             Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                '보유 포인트: 1000', // 예시로 고정된 포인트 값, 나중에 유저마다 다르게 보여야함
+                '보유 포인트: 800', // 예시로 고정된 포인트 값, 나중에 유저마다 다르게 보여야함
                 style: TextStyle(color: Colors.white, fontSize: 19),
               ),
             ),
@@ -66,13 +66,13 @@ class EventDetailScreen extends StatelessWidget {
             Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                '차감될 포인트: 200', // 예시로 고정된 포인트 값
+                '차감될 포인트: 500', // 예시로 고정된 포인트 값
                 style: TextStyle(color: Colors.white, fontSize: 19),
               ),
             ),
             SizedBox(height: 50),
             Container(
-              width: 250, // 원하는 너비로 설정
+              width: 280, // 원하는 너비로 설정
               height: 50, // 원하는 높이로 설정
               child: ElevatedButton(
                 onPressed: () {

@@ -29,7 +29,7 @@ class Tab1Screen extends StatelessWidget {
             children: [
               Center(
                 child: Container(
-                  width: 400,
+                  width: 350,
                   height: 50,
                   child: ElevatedButton(
                     onPressed: () => _checkAttendance(context),
@@ -74,7 +74,7 @@ class Tab1Screen extends StatelessWidget {
               Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  '캘린더',
+                  ' 캘린더',
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
@@ -85,11 +85,11 @@ class Tab1Screen extends StatelessWidget {
               SizedBox(height: 16),
               Center(
                 child: Container(
-                  width: double.infinity,
+                  width: 350,
                   height: 400,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16.0),
-                    color: Colors.grey[900], // 더 어두운 배경 색상
+                    color: Color(0xFF393939), // 더 어두운 배경 색상
                   ),
                   child: TableCalendar(
                     focusedDay: DateTime.now(),
@@ -129,7 +129,7 @@ class Tab1Screen extends StatelessWidget {
               ),
               SizedBox(height: 20),
               Text(
-                '예정된 활동',
+                ' 예정된 활동',
                 style: TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
@@ -137,32 +137,35 @@ class Tab1Screen extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 8),
-              Container(
-                height: 200,
-                child: ListView.builder(
-                  itemCount: 3, // 예정된 활동 개수
-                  itemBuilder: (context, index) {
-                    return Container(
-                      margin: EdgeInsets.symmetric(vertical: 8.0),
-                      padding: EdgeInsets.all(16.0),
-                      decoration: BoxDecoration(
-                        color : Color(0xFFD6D6D6), // 지정된 색상으로 변경
-                        borderRadius: BorderRadius.circular(16.0),
-                      ),
-                      child: Text(
-                        '포인트 사용해서 얻은 활동 리스트업 (스크롤되게)',
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.black,
+              Center (
+                child: Container(
+                  height: 200,
+                  width: 350,
+                  child: ListView.builder(
+                    itemCount: 3, // 예정된 활동 개수
+                    itemBuilder: (context, index) {
+                      return Container(
+                        margin: EdgeInsets.symmetric(vertical: 8.0),
+                        padding: EdgeInsets.all(16.0),
+                        decoration: BoxDecoration(
+                          color : Color(0xFF212121), // 지정된 색상으로 변경
+                          borderRadius: BorderRadius.circular(16.0),
                         ),
-                      ),
-                    );
-                  },
+                        child: Text(
+                          '포인트 사용해서 얻은 활동 리스트업 (스크롤되게)',
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.grey,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
                 ),
               ),
               SizedBox(height: 16),
               Text(
-                '나의 리뷰',
+                ' 나의 리뷰',
                 style: TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
@@ -170,29 +173,32 @@ class Tab1Screen extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 8),
-              Container(
-                height: 200,
-                child: ListView.builder(
-                  itemCount: 3, // 작성한 리뷰 개수
-                  itemBuilder: (context, index) {
-                    return Container(
-                      margin: EdgeInsets.symmetric(vertical: 8.0),
-                      padding: EdgeInsets.all(16.0),
-                      decoration: BoxDecoration(
-                        color: Color(0xFFD6D6D6), // 지정된 색상으로 변경
-                        borderRadius: BorderRadius.circular(16.0),
-                      ),
-                      child: Text(
-                        '작성한 음악 리뷰들 리스트업 (스크롤되게)',
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.black,
+              Center (
+                child:Container(
+                  height: 200,
+                  width: 350,
+                  child: ListView.builder(
+                    itemCount: 3, // 작성한 리뷰 개수
+                    itemBuilder: (context, index) {
+                      return Container(
+                        margin: EdgeInsets.symmetric(vertical: 8.0),
+                        padding: EdgeInsets.all(16.0),
+                        decoration: BoxDecoration(
+                          color: Color(0xFF212121), // 지정된 색상으로 변경
+                          borderRadius: BorderRadius.circular(16.0),
                         ),
-                      ),
-                    );
-                  },
+                        child: Text(
+                          '작성한 음악 리뷰들 리스트업 (스크롤되게)',
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.grey,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
                 ),
-              ),
+              )
             ],
           ),
         ),

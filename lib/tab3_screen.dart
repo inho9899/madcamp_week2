@@ -100,7 +100,7 @@ class Tab3Screen extends StatelessWidget {
                           ),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(16.0),
-                            child: Image.asset( // 수정된 부분: Image.network을 Image.asset으로 변경
+                            child: Image.asset(
                               event.imagePath,
                               fit: BoxFit.cover,
                             ),

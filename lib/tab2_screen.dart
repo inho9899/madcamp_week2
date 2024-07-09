@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'playlist_screen.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
 class Tab2Screen extends StatefulWidget {
   @override
@@ -18,6 +19,8 @@ class _Tab2ScreenState extends State<Tab2Screen> {
   Duration _duration = Duration();
   Duration _position = Duration();
   bool isPlaying = false;
+
+  final ValueNotifier<bool> isDialOpen = ValueNotifier(false);
 
   @override
   void initState() {
@@ -107,11 +110,12 @@ class _Tab2ScreenState extends State<Tab2Screen> {
         return StatefulBuilder(
           builder: (context, setState) {
             return AlertDialog(
-              title: Text('Write a Review'),
+              backgroundColor: Color(0xFF2C2C2C),
+              title: Text('Write a Review', style: TextStyle(color: Colors.white)),
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text('Please select a rating'),
+                  Text('Please select a rating', style: TextStyle(color: Colors.white)),
                   SizedBox(height: 8),
                   RatingBar.builder(
                     initialRating: 0,
@@ -134,13 +138,13 @@ class _Tab2ScreenState extends State<Tab2Screen> {
               ),
               actions: [
                 TextButton(
-                  child: Text('Cancel'),
+                  child: Text('Cancel', style: TextStyle(color: Colors.tealAccent)),
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
                 ),
                 TextButton(
-                  child: Text('Save'),
+                  child: Text('Save', style: TextStyle(color: Colors.tealAccent)),
                   onPressed: () {
                     print('Rating: $_rating');
                     Navigator.of(context).pop();
@@ -157,6 +161,7 @@ class _Tab2ScreenState extends State<Tab2Screen> {
   @override
   void dispose() {
     _audioPlayer.dispose();
+    isDialOpen.dispose();
     super.dispose();
   }
 
@@ -169,14 +174,13 @@ class _Tab2ScreenState extends State<Tab2Screen> {
       ),
       body: SingleChildScrollView(
         child: Container(
-          color: Colors.black,
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                'Today\'s Recommended Playlist',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
+                '오늘의 추천 플레이리스트',
+                style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.white),
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 20),
@@ -193,166 +197,90 @@ class _Tab2ScreenState extends State<Tab2Screen> {
               SizedBox(height: 30),
               Text(
                 songTitle,
-                style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.grey),
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.grey),
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 10),
               Text(
                 songDescription,
-                style: TextStyle(fontSize: 17, color: Colors.grey),
+                style: TextStyle(fontSize: 16, color: Colors.grey),
                 textAlign: TextAlign.center,
               ),
-              SizedBox(height: 5),
+              SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   IconButton(
-                    icon: Icon(isPlaying ? Icons.pause : Icons.play_arrow, color: Colors.white),
-                    iconSize: 40,
+                    icon: Icon(isPlaying ? Icons.pause_circle_filled : Icons.play_circle_fill, color: Colors.white),
+                    iconSize: 64,
                     onPressed: isPlaying ? _pauseMusic : _playMusic,
                   ),
-                  Expanded(
-                    child: Slider(
-                      value: _position.inSeconds.toDouble(),
-                      min: 0.0,
-                      max: _duration.inSeconds.toDouble(),
-                      onChanged: (double value) {
-                        setState(() {
-                          _seekTo(value);
-                        });
-                      },
-                      activeColor: Colors.white,
-                      inactiveColor: Colors.white,
-                    ),
+                ],
+              ),
+              Slider(
+                value: _position.inSeconds.toDouble(),
+                min: 0.0,
+                max: _duration.inSeconds.toDouble(),
+                onChanged: (double value) {
+                  setState(() {
+                    _seekTo(value);
+                  });
+                },
+                activeColor: Color(0xFFFFFFFF),
+                inactiveColor: Colors.grey,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    formatDuration(_position),
+                    style: TextStyle(color: Colors.white),
                   ),
                   Text(
-                    '${formatDuration(_position)} / ${formatDuration(_duration)}',
+                    formatDuration(_duration),
                     style: TextStyle(color: Colors.white),
                   ),
                 ],
               ),
-              SizedBox(height: 30),
-              Padding(
-                padding: const EdgeInsets.only(left: 30.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Container(
-                            height: 50,
-                            child: ElevatedButton(
-                              onPressed: () => _addToPlaylist(context),
-                              style: ElevatedButton.styleFrom(
-                                padding: EdgeInsets.zero, // 패딩 제거
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                              ),
-                              child: Ink(
-                                decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                    colors: [Colors.pinkAccent, Colors.pinkAccent],
-                                    begin: Alignment.topLeft,
-                                    end: Alignment.bottomRight,
-                                  ),
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  child: Text(
-                                    'Add to playlist',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(width: 8),
-                        Expanded(
-                          child: Container(
-                            height: 50,
-                            child: ElevatedButton(
-                              onPressed: () => _writeReview(context),
-                              style: ElevatedButton.styleFrom(
-                                padding: EdgeInsets.zero, // 패딩 제거
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                              ),
-                              child: Ink(
-                                decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                    colors: [Colors.pinkAccent, Colors.pinkAccent],
-                                    begin: Alignment.topLeft,
-                                    end: Alignment.bottomRight,
-                                  ),
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  child: Text(
-                                    'Write a Review',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 16),
-                    Container(
-                      height: 50,
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: () => _goToPlaylist(context),
-                        style: ElevatedButton.styleFrom(
-                          padding: EdgeInsets.zero, // 패딩 제거
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                        child: Ink(
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [Colors.pinkAccent, Colors.pinkAccent],
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                            ),
-                            borderRadius: BorderRadius.circular(6),
-                          ),
-                          child: Container(
-                            alignment: Alignment.center,
-                            child: Text(
-                              'Go to Playlist',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              SizedBox(height: 20),
             ],
           ),
         ),
+      ),
+      floatingActionButton: SpeedDial(
+        openCloseDial: isDialOpen,
+        icon: Icons.add,
+        activeIcon: Icons.close,
+        backgroundColor: Color(0xFF1C63BF).withOpacity(0.8),
+        spaceBetweenChildren: 10.0,
+        overlayColor: Colors.black,
+        overlayOpacity: 0.5,
+        children: [
+          SpeedDialChild(
+            child: Icon(Icons.playlist_add, color: Colors.white),
+            backgroundColor: Color(0xFF11228E),
+            label: '플레이리스트에 추가',
+            labelStyle: TextStyle(color: Colors.black),
+            labelBackgroundColor: Colors.white,
+            onTap: () => _addToPlaylist(context),
+          ),
+          SpeedDialChild(
+            child: Icon(Icons.rate_review, color: Colors.white),
+            backgroundColor: Color(0xFF11228E),
+            label: '리뷰쓰기',
+            labelStyle: TextStyle(color: Colors.black),
+            labelBackgroundColor: Colors.white,
+            onTap: () => _writeReview(context),
+          ),
+          SpeedDialChild(
+            child: Icon(Icons.playlist_add_check, color: Colors.white),
+            backgroundColor: Color(0xFF11228E),
+            label: '플레이리스트로 이동',
+            labelStyle: TextStyle(color: Colors.black),
+            labelBackgroundColor: Colors.white,
+            onTap: () => _goToPlaylist(context),
+          ),
+        ],
       ),
     );
   }

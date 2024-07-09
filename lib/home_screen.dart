@@ -26,7 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     List<Widget> _widgetOptions = <Widget>[
       Tab1Screen(),
-      Tab2Screen(),
+      Tab2Screen(token : widget.token),
       Tab3Screen(),
     ];
 

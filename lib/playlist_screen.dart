@@ -26,7 +26,7 @@ class PlaylistScreen extends StatelessWidget {
             Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                '추천 플레이리스트',
+                '플레이리스트',
                 style: TextStyle(fontSize: 24,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,

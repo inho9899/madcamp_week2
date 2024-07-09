@@ -79,7 +79,7 @@ class EventDetailScreen extends StatelessWidget {
                   // 포인트 차감 로직 추가
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Text('포인트가 차감되었습니다.'),
+                      content: Text('포인트가 차감되었습니다'),
                       duration: Duration(seconds: 1),
                     ),
                   );

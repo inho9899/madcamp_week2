@@ -67,7 +67,7 @@ class Tab3Screen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          '[앱 이름] Event',
+          '  [Event]',
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         backgroundColor: Colors.black,
@@ -116,6 +116,8 @@ class Tab3Screen extends StatelessWidget {
                             child: Text(
                               event.description,
                               style: TextStyle(
+                                fontFamily: "Pretendard-SemiBold",
+                                fontWeight: FontWeight.w400,
                                 color: Colors.white,
                                 fontSize: 16,
                               ),

@@ -13,7 +13,9 @@ class EventDetailScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           event.description,
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          style: TextStyle(color: Colors.white,
+              fontFamily: "Pretendard-Bold",
+              fontWeight: FontWeight.w500),
         ),
         backgroundColor: Colors.black,
         leading: IconButton(
@@ -51,7 +53,10 @@ class EventDetailScreen extends StatelessWidget {
               alignment: Alignment.centerLeft,
               child: Text(
                 event.detailInfo,
-                style: TextStyle(color: Colors.white, fontSize: 21, fontWeight: FontWeight.bold), // 글자 색상을 흰색으로 변경
+                style: TextStyle(color: Colors.white,
+                    fontSize: 21,
+                    fontFamily: "Pretendard-Bold",
+                    fontWeight: FontWeight.w500), // 글자 색상을 흰색으로 변경
               ),
             ),
             SizedBox(height: 15),
@@ -59,7 +64,10 @@ class EventDetailScreen extends StatelessWidget {
               alignment: Alignment.centerLeft,
               child: Text(
                 '보유 포인트: 800', // 예시로 고정된 포인트 값, 나중에 유저마다 다르게 보여야함
-                style: TextStyle(color: Colors.white, fontSize: 19),
+                style: TextStyle(color: Colors.white,
+                    fontSize: 19,
+                    fontFamily: "Pretendard-Regular",
+                    fontWeight: FontWeight.w400),
               ),
             ),
             SizedBox(height: 5),
@@ -67,7 +75,10 @@ class EventDetailScreen extends StatelessWidget {
               alignment: Alignment.centerLeft,
               child: Text(
                 '차감될 포인트: 500', // 예시로 고정된 포인트 값
-                style: TextStyle(color: Colors.white, fontSize: 19),
+                style: TextStyle(color: Colors.white,
+                    fontSize: 19,
+                    fontFamily: "Pretendard-Regular",
+                    fontWeight: FontWeight.w400),
               ),
             ),
             SizedBox(height: 50),

@@ -166,19 +166,32 @@ class _Tab2ScreenState extends State<Tab2Screen> {
     _audioPlayer.seek(position);
   }
 
-  void _addToPlaylist(BuildContext context) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('플레이리스트에 추가되었습니다'),
-        duration: Duration(seconds: 1),
-      ),
+  void _addToPlaylist(String uid, String mid) async {
+    final response = await http.post(
+      Uri.parse('http://172.10.7.116/add_playlist'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, dynamic>{
+        'uid': uid,
+        'mid': mid
+      }),
     );
+
+    if (response.statusCode == 200) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('플레이리스트에 추가되었습니다'),
+          duration: Duration(seconds: 1),
+        ),
+      );
+    }
   }
 
-  void _goToPlaylist(BuildContext context) {
+  void _goToPlaylist(String uid) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => PlaylistScreen()),
+      MaterialPageRoute(builder: (context) => PlaylistScreen(uid : uid)),
     );
   }
 
@@ -284,11 +297,11 @@ class _Tab2ScreenState extends State<Tab2Screen> {
                         SizedBox(width: 170),
                         IconButton(
                           icon: Icon(Icons.favorite, color: Colors.pink),
-                          onPressed: () => _addToPlaylist(context),
+                          onPressed: () => _addToPlaylist(uid, mid),
                         ),
                         IconButton(
                           icon: Icon(Icons.playlist_add_check_sharp, color: Color(0xFF00E86C)),
-                          onPressed: () => _goToPlaylist(context),
+                          onPressed: () => _goToPlaylist(uid),
                         ),
                       ],
                     ),

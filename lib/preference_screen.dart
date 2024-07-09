@@ -73,11 +73,25 @@ class _PreferenceScreenState extends State<PreferenceScreen> {
     );
 
     if (response.statusCode == 200) {
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => HomeScreen(token : widget.token_id, login_method: widget.type)),
-            (Route<dynamic> route) => false,
+      final res = await http.post(
+        Uri.parse('http://172.10.7.116:80/model'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, dynamic>{
+          'preferences': binaryString
+        }),
       );
+      if(res.statusCode == 200){
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => HomeScreen(token : widget.token_id, login_method: widget.type)),
+              (Route<dynamic> route) => false,
+        );
+      }else {
+        throw Exception('Failed to save preferences');
+      }
+
     } else {
       throw Exception('Failed to save preferences');
     }

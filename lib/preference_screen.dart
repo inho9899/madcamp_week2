@@ -58,7 +58,7 @@ class _PreferenceScreenState extends State<PreferenceScreen> {
 
     // 선택한 취향을 DB에 저장하는 로직 추가
     final response = await http.post(
-      Uri.parse('http://172.10.7.126/registerUser'),
+      Uri.parse('http://172.10.7.116/registerUser'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },

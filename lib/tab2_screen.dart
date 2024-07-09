@@ -28,6 +28,7 @@ class _Tab2ScreenState extends State<Tab2Screen> {
 
   String songTitle = "Loading...";  // 초기 값 설정
   String songArtist = "Loading...";  // 초기 값 설정
+  String uid = "1";
 
   @override
   void initState() {
@@ -47,6 +48,7 @@ class _Tab2ScreenState extends State<Tab2Screen> {
         setState(() {
           songTitle = titleResponse.body;
           songArtist = artistResponse.body;
+
         });
       } else {
         print('Failed to load song details');

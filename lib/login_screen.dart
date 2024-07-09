@@ -34,7 +34,7 @@ class LoginPage extends StatelessWidget {
       print('사용자 정보: ${user.toString()}');
 
       final response = await http.post(
-        Uri.parse('http://172.10.7.126/checkUser'),
+        Uri.parse('http://172.10.7.116/checkUser'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -75,7 +75,7 @@ class LoginPage extends StatelessWidget {
         print("hello");
 
         final response = await http.post(
-          Uri.parse('http://172.10.7.126/checkUser'),
+          Uri.parse('http://172.10.7.116/checkUser'),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
           },

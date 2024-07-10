@@ -105,7 +105,7 @@ class _PreferenceScreenState extends State<PreferenceScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 16),
+            SizedBox(height: 10),
             Center(
               child: Text(
                 '회원가입이 거의 다 완료되었어요',
@@ -126,7 +126,7 @@ class _PreferenceScreenState extends State<PreferenceScreen> {
                 ),
               ),
             ),
-            SizedBox(height: 32),
+            SizedBox(height: 20),
             Expanded(
               child: GridView.count(
                 crossAxisCount: 2,

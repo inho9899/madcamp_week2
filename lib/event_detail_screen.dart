@@ -1,11 +1,16 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import 'tab3_screen.dart';
 
 class EventDetailScreen extends StatelessWidget {
   final Event event;
+  final String point;
+  final String uid;
+  final int index;
 
-  EventDetailScreen({required this.event});
+  EventDetailScreen({required this.event, required this.point, required this.uid, required this.index});
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +63,7 @@ class EventDetailScreen extends StatelessWidget {
             Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                '보유 포인트: 800', // 예시로 고정된 포인트 값, 나중에 유저마다 다르게 보여야함
+                '보유 포인트: $point', // 예시로 고정된 포인트 값, 나중에 유저마다 다르게 보여야함
                 style: TextStyle(color: Colors.white, fontSize: 19),
               ),
             ),
@@ -75,14 +80,44 @@ class EventDetailScreen extends StatelessWidget {
               width: 280, // 원하는 너비로 설정
               height: 50, // 원하는 높이로 설정
               child: ElevatedButton(
-                onPressed: () {
-                  // 포인트 차감 로직 추가
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('포인트가 차감되었습니다'),
-                      duration: Duration(seconds: 1),
-                    ),
+                onPressed: () async{
+                  print("eid : $index");
+
+                  final response = await http.post(
+                    Uri.parse('http://172.10.7.116/buy_event'),
+                    headers: <String, String>{
+                      'Content-Type': 'application/json; charset=UTF-8',
+                    },
+                    body: jsonEncode(<String, dynamic>{
+                      'uid': uid,
+                      'eid': index,
+                      'coin' : point
+                    }),
                   );
+
+                  print("${response.statusCode}");
+
+                  if(response.statusCode == 200){
+                    // int newpoint = int.parse(point) - 500;
+                    // 포인트 차감 로직 추가
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('포인트를 사용했습니다!!'),
+                        duration: Duration(seconds: 1),
+                      ),
+                    );
+                    Navigator.of(context).pop("bye");
+                  }
+                  else{
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('포인트가 부족합니다'),
+                        duration: Duration(seconds: 1),
+                      ),
+                    );
+                  }
+
+
                 },
                 style: ElevatedButton.styleFrom(
                   padding: EdgeInsets.zero, // 패딩을 제거

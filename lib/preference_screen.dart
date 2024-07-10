@@ -10,6 +10,8 @@ class PreferenceScreen extends StatefulWidget {
   final String token_id;
   final String type;
 
+
+
   PreferenceScreen({required this.name, required this.id, required this.password, required this.token_id, required this.type});
 
   @override

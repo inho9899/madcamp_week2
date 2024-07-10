@@ -25,9 +25,9 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     List<Widget> _widgetOptions = <Widget>[
-      Tab1Screen(),
+      Tab1Screen(token : widget.token),
       Tab2Screen(token : widget.token),
-      Tab3Screen(),
+      Tab3Screen(token : widget.token),
     ];
 
     return Scaffold(

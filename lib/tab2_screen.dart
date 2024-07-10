@@ -242,9 +242,22 @@ class _Tab2ScreenState extends State<Tab2Screen> {
                 ),
                 TextButton(
                   child: Text('저장', style: TextStyle(color: Colors.white)),
-                  onPressed: () {
-                    print('별점: $_rating');
-                    Navigator.of(context).pop();
+                  onPressed: () async {
+                    final response = await http.post(
+                      Uri.parse('http://172.10.7.116/feedback'),
+                      headers: <String, String>{
+                        'Content-Type': 'application/json; charset=UTF-8',
+                      },
+                      body: jsonEncode(<String, dynamic>{
+                        'uid': uid,
+                        'mid': mid,
+                        'rate' : _rating
+                      }),
+                    );
+                    if(response.statusCode == 200){
+                      print('별점: $_rating');
+                      Navigator.of(context).pop();
+                    }
                   },
                 ),
               ],

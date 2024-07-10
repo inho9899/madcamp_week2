@@ -430,7 +430,7 @@ class _Tab1ScreenState extends State<Tab1Screen> {
                           leading: Image.asset(
                             event.imagePath,
                             width: 50,
-                            height: 50,
+                            height: 100,
                             fit: BoxFit.cover,
                           ),
                           title: Text(
@@ -467,12 +467,17 @@ class _Tab1ScreenState extends State<Tab1Screen> {
                 child: Container(
                   height: 250,
                   width: 350,
+                  decoration: BoxDecoration(
+                    color: Color(0xFF333333), // 더 어두운 배경 색상
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
+                  padding: EdgeInsets.all(16.0), // 큰 컨테이너의 패딩
                   child: ListView.builder(
                     itemCount: filteredPlaylist.length, // 작성한 리뷰 개수
                     itemBuilder: (context, index) {
                       var review = filteredPlaylist[index];
                       return Card(
-                        color: Color(0xFF333333), // 카드 배경색
+                        color: Color(0xFF444444), // 카드 배경색
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(16.0),
                         ),
@@ -483,51 +488,52 @@ class _Tab1ScreenState extends State<Tab1Screen> {
                             children: [
                               Row(
                                 children: [
-                                  SizedBox(width: 10.0),
                                   Image.network(
                                     "http://172.10.7.116:80/music_image/" +
                                         review['music_id'].toString(),
-                                    width: 50,
-                                    height: 50,
+                                    width: 80,
+                                    height: 80,
                                     fit: BoxFit.cover,
                                   ),
-                                  SizedBox(width: 35.0),
-                                  Column(
-                                    crossAxisAlignment:
-                                    CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        review['music_name'] ??
-                                            'Unknown Title',
-                                        style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white,
+                                  SizedBox(width: 20.0),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          review['music_name'] ?? 'Unknown Title',
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white,
+                                          ),
+                                          softWrap: true,
+                                          overflow: TextOverflow.ellipsis,
                                         ),
-                                      ),
-                                      Text(
-                                        review['artist'] ?? 'Unknown Artist',
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                          color: Colors.grey,
+                                        Text(
+                                          review['artist'] ?? 'Unknown Artist',
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            color: Colors.grey,
+                                          ),
+                                          softWrap: true,
+                                          overflow: TextOverflow.ellipsis,
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                 ],
                               ),
                               SizedBox(height: 8.0),
-                              Transform.translate(
-                                offset: Offset(90, 0),
+                              Container(
+                                alignment: Alignment.centerRight,
                                 child: RatingBar.builder(
-                                  initialRating:
-                                  review['rate']?.toDouble() ?? 0.0, // 리뷰의 별점 값
+                                  initialRating: review['rate']?.toDouble() ?? 0.0, // 리뷰의 별점 값
                                   direction: Axis.horizontal,
                                   allowHalfRating: true,
                                   itemCount: 5,
                                   itemSize: 25.0, // 별 크기를 줄입니다.
-                                  itemPadding:
-                                  EdgeInsets.symmetric(horizontal: 2.0),
+                                  itemPadding: EdgeInsets.symmetric(horizontal: 2.0),
                                   itemBuilder: (context, _) => Icon(
                                     Icons.star,
                                     color: Colors.amber,

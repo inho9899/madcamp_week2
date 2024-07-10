@@ -2,22 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'playlist_screen.dart';
 import 'package:audioplayers/audioplayers.dart';
-// import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-
 class Tab2Screen extends StatefulWidget {
+  final String? token;
+  Tab2Screen({this.token});
+
   @override
   _Tab2ScreenState createState() => _Tab2ScreenState();
 }
 
 class _Tab2ScreenState extends State<Tab2Screen> {
-  final String songTitleUrl = 'http://172.10.7.116:80/title';
-  final String songArtistUrl = 'http://172.10.7.116:80/artist';
-  final String songUrl = 'http://172.10.7.116:80/music';
-  final String albumUrl = 'http://172.10.7.116:80/music_image';
-
+  String songTitleUrl = 'http://172.10.7.116:80/title';
+  String songArtistUrl = 'http://172.10.7.116:80/artist';
+  String songUrl = 'http://172.10.7.116:80/music';
+  String albumUrl = 'http://172.10.7.116:80/music_image';
 
   late AudioPlayer _audioPlayer;
   Duration _duration = Duration();
@@ -28,15 +28,68 @@ class _Tab2ScreenState extends State<Tab2Screen> {
 
   String songTitle = "Loading...";  // 초기 값 설정
   String songArtist = "Loading...";  // 초기 값 설정
-  String uid = "1";
+  String uid = "0";
+  String mid = "0";
 
   @override
   void initState() {
     super.initState();
+    _initialize();
+  }
+
+  Future<void> _initialize() async {
+    await _getuser();
+    await _getmusicid();
     _audioPlayer = AudioPlayer();
     _initAudioPlayer();
-    _fetchSongDetails();
+    await _fetchSongDetails();
     _playMusic(); // 화면이 로드될 때 음악을 자동으로 재생
+  }
+
+  Future<void> _getuser() async {
+    try {
+      final response = await http.get(
+        Uri.parse('http://172.10.7.116:80/get_uid?token=${widget.token}'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        setState(() {
+          uid = response.body;
+        });
+      } else {
+        print('Failed to load uid');
+      }
+    } catch (e) {
+      print('Error loading uid: $e');
+    }
+  }
+
+  Future<void> _getmusicid() async {
+    try {
+      final response = await http.get(
+        Uri.parse('http://172.10.7.116:80/get_mid?uid=${uid}'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        setState(() {
+          mid = response.body;
+          songTitleUrl = 'http://172.10.7.116:80/title/' + mid;
+          songArtistUrl = 'http://172.10.7.116:80/artist/' + mid;
+          songUrl = 'http://172.10.7.116:80/music/' + mid;
+          albumUrl = 'http://172.10.7.116:80/music_image/' + mid;
+        });
+      } else {
+        print('Failed to load mid');
+      }
+    } catch (e) {
+      print('Error loading mid: $e');
+    }
   }
 
   Future<void> _fetchSongDetails() async {
@@ -48,7 +101,6 @@ class _Tab2ScreenState extends State<Tab2Screen> {
         setState(() {
           songTitle = titleResponse.body;
           songArtist = artistResponse.body;
-
         });
       } else {
         print('Failed to load song details');
@@ -57,7 +109,6 @@ class _Tab2ScreenState extends State<Tab2Screen> {
       print('Error loading song details: $e');
     }
   }
-
 
   Future<void> _initAudioPlayer() async {
     _audioPlayer.onDurationChanged.listen((Duration d) {
@@ -115,19 +166,32 @@ class _Tab2ScreenState extends State<Tab2Screen> {
     _audioPlayer.seek(position);
   }
 
-  void _addToPlaylist(BuildContext context) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('플레이리스트에 추가되었습니다'),
-        duration: Duration(seconds: 1),
-      ),
+  void _addToPlaylist(String uid, String mid) async {
+    final response = await http.post(
+      Uri.parse('http://172.10.7.116/add_playlist'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, dynamic>{
+        'uid': uid,
+        'mid': mid
+      }),
     );
+
+    if (response.statusCode == 200) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('플레이리스트에 추가되었습니다'),
+          duration: Duration(seconds: 1),
+        ),
+      );
+    }
   }
 
-  void _goToPlaylist(BuildContext context) {
+  void _goToPlaylist(String uid) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => PlaylistScreen()),
+      MaterialPageRoute(builder: (context) => PlaylistScreen(uid : uid)),
     );
   }
 
@@ -178,9 +242,22 @@ class _Tab2ScreenState extends State<Tab2Screen> {
                 ),
                 TextButton(
                   child: Text('저장', style: TextStyle(color: Colors.white)),
-                  onPressed: () {
-                    print('별점: $_rating');
-                    Navigator.of(context).pop();
+                  onPressed: () async {
+                    final response = await http.post(
+                      Uri.parse('http://172.10.7.116/feedback'),
+                      headers: <String, String>{
+                        'Content-Type': 'application/json; charset=UTF-8',
+                      },
+                      body: jsonEncode(<String, dynamic>{
+                        'uid': uid,
+                        'mid': mid,
+                        'rate' : _rating
+                      }),
+                    );
+                    if(response.statusCode == 200){
+                      print('별점: $_rating');
+                      Navigator.of(context).pop();
+                    }
                   },
                 ),
               ],
@@ -233,11 +310,11 @@ class _Tab2ScreenState extends State<Tab2Screen> {
                         SizedBox(width: 170),
                         IconButton(
                           icon: Icon(Icons.favorite, color: Colors.pink),
-                          onPressed: () => _addToPlaylist(context),
+                          onPressed: () => _addToPlaylist(uid, mid),
                         ),
                         IconButton(
                           icon: Icon(Icons.playlist_add_check_sharp, color: Color(0xFF00E86C)),
-                          onPressed: () => _goToPlaylist(context),
+                          onPressed: () => _goToPlaylist(uid),
                         ),
                       ],
                     ),

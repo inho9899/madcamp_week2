@@ -13,9 +13,12 @@ class EventDetailScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           event.description,
-          style: TextStyle(color: Colors.white,
-              fontFamily: "Pretendard-Bold",
-              fontWeight: FontWeight.w500),
+          style: TextStyle(
+            color: Colors.white,
+            fontFamily: 'NanumSquareRoundB',
+            fontWeight: FontWeight.w600,
+            // fontWeight: FontWeight.w700,
+          ),
         ),
         backgroundColor: Colors.black,
         leading: IconButton(
@@ -51,34 +54,94 @@ class EventDetailScreen extends StatelessWidget {
             SizedBox(height: 15),
             Align(
               alignment: Alignment.centerLeft,
-              child: Text(
-                event.detailInfo,
-                style: TextStyle(color: Colors.white,
-                    fontSize: 21,
-                    fontFamily: "Pretendard-Bold",
-                    fontWeight: FontWeight.w500), // 글자 색상을 흰색으로 변경
+              child: Row(
+                children: [
+                  Icon(Icons.favorite, color: Color(0xFFF31F7C)),
+                  SizedBox(width: 8),
+                  Text(
+                    event.event,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 19,
+                        fontFamily: "NanumSquareRoundR",
+                        fontWeight: FontWeight.w400,
+                    ), // 글자 색상을 흰색으로 변경
+                  ),
+                ],
               ),
             ),
             SizedBox(height: 15),
             Align(
               alignment: Alignment.centerLeft,
-              child: Text(
-                '보유 포인트: 800', // 예시로 고정된 포인트 값, 나중에 유저마다 다르게 보여야함
-                style: TextStyle(color: Colors.white,
-                    fontSize: 19,
-                    fontFamily: "Pretendard-Regular",
-                    fontWeight: FontWeight.w400),
+              child: Row(
+                children: [
+                  Icon(Icons.place, color: Color(0xFF5CBCE4)),
+                  SizedBox(width: 8),
+                  Text(
+                    event.detailInfo,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 19,
+                      fontFamily: "NanumSquareRoundR",
+                      fontWeight: FontWeight.w400,
+                    ), // 글자 색상을 흰색으로 변경
+                  ),
+                ],
               ),
             ),
-            SizedBox(height: 5),
             Align(
               alignment: Alignment.centerLeft,
-              child: Text(
-                '차감될 포인트: 500', // 예시로 고정된 포인트 값
-                style: TextStyle(color: Colors.white,
-                    fontSize: 19,
-                    fontFamily: "Pretendard-Regular",
-                    fontWeight: FontWeight.w400),
+              child: Row(
+                children: [
+                  Icon(Icons.event_available, color: Color(0xFF5CBCE4)),
+                  SizedBox(width: 8),
+                  Text(
+                    event.date,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 19,
+                      fontFamily: "NanumSquareRoundR",
+                      fontWeight: FontWeight.w400,
+                    ), // 글자 색상을 흰색으로 변경
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 15),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Row(
+                children: [
+                  Icon(Icons.control_point_duplicate, color: Color(0xFFDFDC44)),
+                  SizedBox(width: 8),
+                  Text(
+                    '보유 포인트: 800', // 예시로 고정된 포인트 값, 나중에 유저마다 다르게 보여야함
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontFamily: "NanumSquareRoundR",
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Row(
+                children: [
+                  Icon(Icons.remove_circle_outline, color: Color(0xFFDFDC44)),
+                  SizedBox(width: 8),
+                  Text(
+                    '차감될 포인트: 500', // 예시로 고정된 포인트 값
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontFamily: "NanumSquareRoundR",
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ],
               ),
             ),
             SizedBox(height: 50),
@@ -117,7 +180,7 @@ class EventDetailScreen extends StatelessWidget {
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 18, // 원하는 글자 크기
-                        fontWeight: FontWeight.bold,// 볼드체 설정
+                        fontWeight: FontWeight.bold, // 볼드체 설정
                       ),
                     ),
                   ),

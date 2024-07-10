@@ -7,12 +7,16 @@ class Event {
   final String description;
   final int daysLeft;
   final String detailInfo;
+  final String date;
+  final String event;
 
   Event({
     required this.imagePath, // 수정된 부분: imageUrl을 imagePath로 변경
     required this.description,
     required this.daysLeft,
     required this.detailInfo,
+    required this.date,
+    required this.event
   });
 }
 
@@ -24,27 +28,34 @@ class Tab3Screen extends StatelessWidget {
       description: '7/13-14 윤하 소극장 콘서트',
       daysLeft: 3,
       detailInfo: '위치 : 서울 블루스퀘어 마스터카드홀',
+      date: '날짜 : 2024-07-13/14',
+      event: '이벤트 정보 : 윤하 소극장 콘서트'
     ),
     Event(
       imagePath: 'assets/images/ive.png',
       description: '8/10-11 아이브(IVE) 앙코르 콘서트',
       daysLeft: 31,
       detailInfo: '위치 : KSPO DOME',
+        date: '날짜 : 2024-08-10/11',
+        event: '이벤트 정보 : 아이브(IVE) 앙코르 콘서트'
     ),
     Event(
       imagePath: 'assets/images/christopher.png',
       description: '8/24-25 Christopher 내한 공연',
       daysLeft: 45,
       detailInfo: '위치 : 잠실 실내체육관',
+        date: '날짜 : 2024-08/24-25',
+        event: '이벤트 정보 : Christopher 내한 공연'
     ),
     Event(
       imagePath: 'assets/images/iu.png',
       description: '9/21-22 아이유 앵콜 콘서트',
       daysLeft: 73,
       detailInfo: '위치 : 서울 월드컵경기장',
+        date: '날짜 : 2024-09/21-22',
+        event: '이벤트 정보 : 아이유 앵콜 콘서트'
     ),
   ];
-
 
   // 원하는 개수만큼 이벤트를 가져오는 메서드
   List<Event> getLimitedEvents(int count) {
@@ -67,84 +78,106 @@ class Tab3Screen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          '  [Event]',
+          '  [이벤트] 예정된 행사',
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         backgroundColor: Colors.black,
       ),
       backgroundColor: Colors.black,
-      body: ListView.builder(
-        itemCount: events.length,
-        itemBuilder: (context, index) {
-          final event = events[index];
-          return Column(
-            children: [
-              GestureDetector(
-                onTap: () => _showEventDetails(context, event),
-                child: Container(
-                  margin: EdgeInsets.all(8.0),
-                  padding: EdgeInsets.all(16.0),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16.0),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Center(
-                        child: Container(
-                          width: double.infinity,
-                          height: 220,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(16.0),
-                            color: Colors.white,
-                          ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(16.0),
-                            child: Image.asset(
-                              event.imagePath,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                      ),
-
-                      SizedBox(height: 8),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            child: Text(
-                              event.description,
-                              style: TextStyle(
-                                fontFamily: "Pretendard-SemiBold",
-                                fontWeight: FontWeight.w400,
-                                color: Colors.white,
-                                fontSize: 16,
-                              ),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                          Container(
-                            padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                            decoration: BoxDecoration(color: Color(0xFFB2E545)),
-                            child: Text(
-                              'D-${event.daysLeft}',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
+      body: Column(
+        children: [
+          Container(
+            width: 350,
+            color: Colors.black,
+            //padding: EdgeInsets.all(16.0),
+            child: Row(
+              children: [
+                Icon(Icons.campaign, color: Colors.pinkAccent),
+                Text(
+                  '  포인트를 사용하고 콘서트 티켓 받아가세요!',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-              ),
-              SizedBox(height: 1), // 각 컨테이너 사이의 간격을 설정
-            ],
-          );
-        },
+              ],
+            ),
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: events.length,
+              itemBuilder: (context, index) {
+                final event = events[index];
+                return Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () => _showEventDetails(context, event),
+                      child: Container(
+                        margin: EdgeInsets.all(8.0),
+                        padding: EdgeInsets.all(16.0),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16.0),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Center(
+                              child: Container(
+                                width: double.infinity,
+                                height: 220,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(16.0),
+                                  color: Colors.white,
+                                ),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(16.0),
+                                  child: Image.asset(
+                                    event.imagePath,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 8),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    event.description,
+                                    style: TextStyle(
+                                      fontFamily: "Pretendard-SemiBold",
+                                      fontWeight: FontWeight.w400,
+                                      color: Colors.white,
+                                      fontSize: 17,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                                Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                                  decoration: BoxDecoration(color: Color(0xFFB2E545)),
+                                  child: Text(
+                                    'D-${event.daysLeft}',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 1), // 각 컨테이너 사이의 간격을 설정
+                  ],
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -100,6 +100,18 @@ flutter:
           weight: 800
         - asset: assets/fonts/Pretendard-Black.ttf
           weight: 900
+
+    - family: NanumSquareRound
+      fonts:
+        - asset: assets/fonts/NanumSquareRoundEB.ttf
+          weight: 800
+        - asset: assets/fonts/NanumSquareRoundB.ttf
+          weight: 700
+        - asset: assets/fonts/NanumSquareRoundL.ttf
+          weight: 400
+        - asset: assets/fonts/NanumSquareRoundR.ttf
+          weight: 300
+
 flutter_icons:
   android: "launcher_icon"
   ios: true

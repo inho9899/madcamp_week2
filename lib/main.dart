@@ -15,6 +15,13 @@ class MyApp extends StatelessWidget {
       title: 'Kakao and Naver Login',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        fontFamily: 'Pretendard',
+        textTheme: TextTheme(
+          headlineLarge: TextStyle(fontFamily: 'NanumSquareRound', fontWeight: FontWeight.w800),
+          headlineMedium: TextStyle(fontFamily: 'NanumSquareRound', fontWeight: FontWeight.w700),
+          bodyLarge: TextStyle(fontFamily: 'Pretendard', fontWeight: FontWeight.w400),
+          bodyMedium: TextStyle(fontFamily: 'Pretendard', fontWeight: FontWeight.w300),
+        ),
       ),
       debugShowCheckedModeBanner: false,
       home: LoginPage(), //시작 페이지를 로그인 페이지로

@@ -179,12 +179,7 @@ class _Tab2ScreenState extends State<Tab2Screen> {
     );
 
     if (response.statusCode == 200) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('플레이리스트에 추가되었습니다'),
-          duration: Duration(seconds: 1),
-        ),
-      );
+      print('플레이리스트에 추가되었습니다');
     }
   }
 
@@ -257,6 +252,13 @@ class _Tab2ScreenState extends State<Tab2Screen> {
                     if(response.statusCode == 200){
                       print('별점: $_rating');
                       Navigator.of(context).pop();
+
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('리뷰가 등록되었습니다'),
+                          duration: Duration(seconds: 1),
+                        ),
+                      );
                     }
                   },
                 ),
@@ -278,26 +280,35 @@ class _Tab2ScreenState extends State<Tab2Screen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+        backgroundColor: Colors.black,
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(35.0), // 원하는 높이로 설정
+          child: AppBar(
+            backgroundColor: Colors.black,
+          ),
+        ),
       body: SingleChildScrollView(
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(height: 50),
               Text(
-                '오늘의 추천 플레이리스트',
-                style: TextStyle(fontSize: 27, fontWeight: FontWeight.bold, color: Colors.white),
+                '이런 음악은 어때요?',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 25
+                ),
                 textAlign: TextAlign.center,
               ),
-              SizedBox(height: 20),
+              SizedBox(height: 15),
               Container(
                 decoration: BoxDecoration(
                   color: Colors.grey[900],
                   borderRadius: BorderRadius.circular(16.0),
                 ),
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(14.0),
                 child: Column(
                   children: [
                     Row(
@@ -307,10 +318,18 @@ class _Tab2ScreenState extends State<Tab2Screen> {
                           icon: Icon(Icons.rate_review, color: Color(0xFFB6B6B6)),
                           onPressed: () => _writeReview(context),
                         ),
-                        SizedBox(width: 170),
+                        SizedBox(width: 180),
                         IconButton(
                           icon: Icon(Icons.favorite, color: Colors.pink),
-                          onPressed: () => _addToPlaylist(uid, mid),
+                          onPressed: () {
+                            _addToPlaylist(uid, mid);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('플레이리스트에 추가되었습니다'),
+                                duration: Duration(seconds: 1),
+                              ),
+                            );
+                          },
                         ),
                         IconButton(
                           icon: Icon(Icons.playlist_add_check_sharp, color: Color(0xFF00E86C)),

@@ -126,22 +126,7 @@ Tab2 음악 재생
         ![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/f6cb388f-3934-47d6-9928-26d2e10eb0fc/a7695add-f805-48fb-a6df-fec86524e001/Untitled.png)
         
     
-    $$
-    R := \textit{(recommend model)}\\
-    R = U(\textit{User to interaction}) \times I(\textit{interaction to Item})(\textit{MF decomp.})\\
-    \textit{update R}\\
-    i := \textit{user id},\textit{    } j := \textit{music id}\\
-    \vec{p_i} := U[i, :]\\
-    \vec{q_j} := U[:, j]\\
-    \hat{r_{ij}} = \vec{p_i} \cdot \vec{q_j}\\
-    e_{ij} = \textit{rate - } \hat{r_{ij}}\\
-    p'_{ik} = p_{ik} - \alpha \cdot \frac{\partial}{\partial p_{ik}}e^{2}_{ij}(\textit{Gradient descent})\\
-    q'_{ik} = q_{ik} - \alpha \cdot \frac{\partial}{\partial q_{ik}}e^{2}_{ij}(\textit{Gradient descent})\\
-    
-    R_{learned} = U' \times I'\\
-    R := R_{learned}
-    
-    $$
+
     
     - 총 6개의 음악 장르를 기반으로 매일 1곡씩 추천 음악 제공
     - 앨범 표지 + 제목 + 아티스트명 정보를 제공

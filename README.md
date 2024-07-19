@@ -24,6 +24,8 @@
    <br>
 
    [![inho9899_github.png](inho9899_github.png)](https://github.com/inho9899)
+   <br>
+
    BackEnd Master(호소인)
 
 <br>
@@ -32,7 +34,9 @@
    <br>
 
    [![jiwonnee_github.png](jiwonnee_github.png)](https://github.com/jiwonnee)
-FrontEnd Master (호소인)
+   <br>
+   
+   FrontEnd Master (호소인)
 <br>
 <br>
 <br>

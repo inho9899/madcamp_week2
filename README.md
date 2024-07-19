@@ -167,11 +167,12 @@ $\textit{update R}$
 
 - $i := \textit{user id},\textit{    } j := \textit{music id}$
 
-- $\vec{p_i} := U[i, :] $, $ \vec{q_j} := U[:, j]$
+- $\vec{p_i} := U[i, :]$, $\vec{q_j} := U[:, j]$
 
 - $\hat{r_{ij}} = \vec{p_i} \cdot \vec{q_j}$, $e_{ij} = \textit{(Rate) - } \hat{r_{ij}}$
 
-- $p'_{ik} = p_{ik} - \alpha \cdot \frac{\partial}{\partial p_{ik}}e^{2}_{ij}$,   $q'_{ik} = q_{ik} - \alpha \cdot \frac{\partial}{\partial q_{ik}}e^{2}_{ij}(\textit{Gradient descent})$
+- $p_{ik}' = p_{ik}$ - $\alpha \cdot \frac{\partial}{\partial p_{ik}}e^{2}_{ij}(\textit{Gradient descent})$
+- $q_{ik}' = q_{ik}$ - $\alpha \cdot \frac{\partial}{\partial q_{ik}}e^{2}_{ij}(\textit{Gradient descent})$
 
 $R_{learned} = U' \times I'$
 

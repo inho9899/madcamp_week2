@@ -1,4 +1,4 @@
-# <Week 2> Team Project (2024 Summer) : [PA : ShipDuck]
+# <Week 2> Team Project (2024 Summer) : [ShipDuck]
 <div align="center">
 
 ![image](TITLE.png)
